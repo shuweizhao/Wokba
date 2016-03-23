@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Wokba</string>
+    <string name="enjoy_now">Enjoy Now</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_phone_number">Phone Number</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_phone">This phone number is invalid</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="error_message">Please Contact the App Developer</string>
+    <string name="error_register_failure">Username has been used, Please try another one</string>
+    <string name="error_login_failure">Log In Failure, Please try again</string>
+    <string name="register_success">Register Success! Go back and Log in!</string>
+    <string name="map">Wokba</string>
+    <string name="order">Order</string>
+    <string name="messages">Messages</string>
+    <string name="profile">Profile</string>
+    <string name="current_order"> Current Order</string>
+    <string name="order_history">Order History</string>
+    <string name="permission_rationale">"Location permissions are needed."</string>
+</resources>
