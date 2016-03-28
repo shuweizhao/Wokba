@@ -29,6 +29,8 @@
         </activity>
         <activity android:name=".MainUIActicity">
         </activity>
+        <activity android:name=".StoreDetail">
+        </activity>
         <activity android:name=".ShakeActivity">
         </activity>
     </application>

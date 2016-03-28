@@ -23,7 +23,7 @@
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="Log In"
+            android:text="Sign In"
             android:layout_weight="1"
             android:textColor="@color/colorPrimary"
             android:background="#FFFFFF"
@@ -38,7 +38,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="32dp"
             android:background="@color/colorPrimary"
-            android:text="Sign Up"
+            android:text="Register"
             android:elevation="16dp"
             android:layout_marginRight="16dp"
             android:textColor="#FFFFFF"
