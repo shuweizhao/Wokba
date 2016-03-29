@@ -36,7 +36,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
@@ -55,13 +55,11 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
     private GoogleMap mgoogleMap;
     private LocationManager locationManager;
     private static final int REQUEST_LOCATION = 0;
-    private HashMap<String, String> UserData;
 
     private com.google.android.gms.maps.MapFragment mapFragment;
     private OrderFragment orderFragment;
     private MessageFragment shakeFragment;
     private ProfileFragment profileFragment;
-    private StoreListFragment storeListFragment;
 
     private RelativeLayout mapLayout;
     private RelativeLayout orderLayout;
@@ -80,6 +78,7 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
 
     private FloatingActionButton fab;
     private Activity context;
+    private ArrayList<String> store_infos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +99,9 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
 
     private void saveUserData(Intent intent) {
         String[] params = intent.getStringExtra(Intent.EXTRA_TEXT).split("/n");
+        String nickname = params.length > 6 ? params[6] : "";
         new User(params[0], params[1], params[2], params[3], params[4], params[5],
-                params[6]);
+                nickname);
 
     }
 
@@ -148,18 +148,9 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
                 setTabSelection(3);
                 break;
             case R.id.store_list_button:
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                hideFragment(fragmentTransaction);
-                fragmentTransaction.hide(mapFragment);
-                if (storeListFragment == null) {
-                    storeListFragment = new StoreListFragment();
-                    fragmentTransaction.add(R.id.content, storeListFragment);
-                }
-                else {
-                    fragmentTransaction.show(storeListFragment);
-                }
-                fragmentTransaction.commit();
-                fab.setVisibility(View.GONE);
+                Intent intent = new Intent(this, StoreListActivity.class);
+                intent.putStringArrayListExtra("store_list", store_infos);
+                startActivity(intent);
                 break;
         }
     }
@@ -241,9 +232,6 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
         }
         if (profileFragment != null) {
             transaction.hide(profileFragment);
-        }
-        if (storeListFragment != null) {
-            transaction.hide(storeListFragment);
         }
     }
 
@@ -388,12 +376,14 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             JsonElement jElement = new JsonParser().parse(s);
-            Store[] stores = gson.fromJson(jElement,Store[].class);
+            Store[] stores = gson.fromJson(jElement, Store[].class);
+            store_infos = new ArrayList<>();
             for (int i = 0; i < stores.length; i++) {
                 mgoogleMap.addMarker(new MarkerOptions()
                         .position(stores[i].getLatLng())
                         .title(stores[i].getTitle())
                         .snippet(stores[i].toString()));
+                store_infos.add(stores[i].toString());
             }
             mgoogleMap.setInfoWindowAdapter(new MyInfoWindowAdapter());
             mgoogleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
