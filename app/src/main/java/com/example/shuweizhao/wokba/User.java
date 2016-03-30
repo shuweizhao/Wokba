@@ -1,5 +1,7 @@
 package com.example.shuweizhao.wokba;
 
+import java.util.ArrayList;
+
 /**
  * Created by shuweizhao on 3/28/16.
  */
@@ -12,6 +14,7 @@ public class User {
     private static String phone;
     private static String nickname;
 
+    private static ArrayList<String[]> favorites;
     User(String uid, String customer, String customer_4, String customer_b,
          String points, String phone, String nickname) {
         this.uid = uid;
@@ -21,5 +24,16 @@ public class User {
         this.points = points;
         this.phone = phone;
         this.nickname = nickname;
+    }
+
+    public static void addFavorite(String[] params) {
+        if (favorites == null) {
+            favorites = new ArrayList<>();
+        }
+        favorites.add(params);
+    }
+
+    public static void removeFavorite(String[] params) {
+
     }
 }

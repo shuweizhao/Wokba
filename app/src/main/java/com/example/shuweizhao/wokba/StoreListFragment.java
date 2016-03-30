@@ -18,13 +18,7 @@ public class StoreListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.store_list_layout, container, false);
-        returnMapButton = (FloatingActionButton) rootView.findViewById(R.id.map_button);
-        returnMapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
         return rootView;
     }
 

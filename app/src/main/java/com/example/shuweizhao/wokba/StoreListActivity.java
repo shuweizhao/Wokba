@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
  * Created by shuweizhao on 3/29/16.
  */
 public class StoreListActivity extends Activity {
-    private FloatingActionButton returnMapButton;
     private ListView storeList;
     private Context mContext;
     @Override
@@ -33,13 +31,7 @@ public class StoreListActivity extends Activity {
         storeList = (ListView) findViewById(R.id.store_list);
         Fresco.initialize(this);
         mContext = this;
-        returnMapButton = (FloatingActionButton) findViewById(R.id.map_button);
-        returnMapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
         ArrayList<String> arrayList = getIntent().getStringArrayListExtra("store_list");
         storeList.setAdapter(new MyAdapater(arrayList, this));
         storeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,8 +81,7 @@ public class StoreListActivity extends Activity {
 
             title.setText(params[2]);
             description.setText(params[3]);
-            Uri uri = Uri.parse("https://wokba.com/api/images/stores/store65.jpeg");
-            //Uri uri = Uri.parse("http://image.tmdb.org/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg");
+            Uri uri = Uri.parse("https://wokba.com/images/stores/" + params[4]);
             image.setImageURI(uri);
             ranking.setText(params[params.length - 1]);
             thumbup.setText(params[6]);

@@ -2,47 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
         android:id="@+id/store_item_title"
+        android:textSize="20sp"
         />
     <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="150dp"
         android:id="@+id/store_item_image"
         />
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        >
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_points_24dp"
+            android:id="@+id/points_image"
+            android:layout_alignParentLeft="true"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/store_item_ranking" />
+            android:id="@+id/store_item_ranking"
+            android:text="hello"
+            android:textSize="15sp"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/points_image" />
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_thumb_up_24dp" />
+            android:src="@drawable/ic_thumb_up_24dp"
+            android:layout_marginLeft="16dp"
+            android:layout_alignBottom="@+id/store_item_ranking"
+            android:layout_toEndOf="@+id/store_item_ranking"
+            android:layout_marginStart="70dp"
+            android:layout_alignParentTop="true"
+            android:id="@+id/imageView" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/store_item_thumb_up"/>
+            android:id="@+id/store_item_thumb_up"
+            android:text="hello"
+            android:textSize="15sp"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/imageView" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/store_item_distance" />
-    </LinearLayout>
+            android:id="@+id/store_item_distance"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="15sp"
         android:id="@+id/store_item_description"/>
 </LinearLayout>
