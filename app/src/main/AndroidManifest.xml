@@ -29,7 +29,13 @@
         </activity>
         <activity android:name=".MainUIActicity">
         </activity>
+        <activity android:name=".StoreDetail">
+        </activity>
         <activity android:name=".ShakeActivity">
+        </activity>
+        <activity android:name=".StoreListActivity">
+        </activity>
+        <activity android:name=".PlateOrderActivity">
         </activity>
     </application>
 

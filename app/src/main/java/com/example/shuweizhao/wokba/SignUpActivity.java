@@ -22,7 +22,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -37,7 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText mPhoneView;
 
     private UserRegisterTask mAuthTask;
-
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
         mEmailView = (AutoCompleteTextView)findViewById(R.id.email);
         mPasswordView = (EditText)findViewById(R.id.password);
         mPhoneView = (EditText)findViewById(R.id.phone_number);
-
+        context = SignUpActivity.this;
         Button signButton = (Button)findViewById(R.id.email_sign_in_button);
         signButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,13 +160,12 @@ public class SignUpActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserRegisterTask extends AsyncTask<Void, Void, Integer> {
 
         private final String mEmail;
         private final String mPassword;
         private final String mPhone;
         private String text;
-        private final OkHttpClient client;
 
 
         UserRegisterTask(String email, String password, String phone) {
@@ -175,11 +173,10 @@ public class SignUpActivity extends AppCompatActivity {
             mPassword = password;
             mPhone = phone;
             text = "";
-            client = new OkHttpClient();
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
 //            try {
@@ -196,7 +193,7 @@ public class SignUpActivity extends AppCompatActivity {
                 response = post("https://wokba.com/api/register.php", mEmail,
                         mPassword, mPhone);
             } catch (IOException e) {
-                System.out.println("unexpected code");
+                return -1;
             }
             System.out.println(response);
             JsonElement jElement = new JsonParser().parse(response);
@@ -204,20 +201,25 @@ public class SignUpActivity extends AppCompatActivity {
             String status = jsonObject.get("status").toString();
             status = status.substring(1, status.length() - 1);
             if (status.equals("register_success")) {
-                return true;
+                return 1;
             }
-            return false;
+            return 0;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final Integer success) {
             mAuthTask = null;
 
-            if (success) {
+            if (success > 0) {
                 finish();
-            } else {
+            } else if (success == 0){
                 mEmailView.setError(getString(R.string.error_register_failure));
                 mEmailView.requestFocus();
+            }
+            else {
+                mEmailView.setError(getString(R.string.network_error));
+                mEmailView.requestFocus();
+
             }
         }
 
@@ -245,7 +247,7 @@ public class SignUpActivity extends AppCompatActivity {
                     .url(url)
                     .post(body)
                     .build();
-            Response response = client.newCall(request).execute();
+            Response response = MyHttpClient.getClient().newCall(request).execute();
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
             final String res = response.body().string();
             response.body().close();

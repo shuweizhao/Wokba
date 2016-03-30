@@ -63,15 +63,11 @@ public class MainActivity extends FragmentActivity {
 
         if (height > reqHeight || width > reqWidth) {
 
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            // 选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高
+            // 一定都会大于等于目标的宽和高。
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }
 
         return inSampleSize;
@@ -108,7 +104,7 @@ public class MainActivity extends FragmentActivity {
             final DisplayMetrics dm = getResources().getDisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-            return decodeSampledBitmapFromResource(getResources(), data, dm.widthPixels, dm.heightPixels);
+            return decodeSampledBitmapFromResource(getResources(), data, dm.widthPixels / 2, dm.heightPixels / 2);
         }
 
         // Once complete, see if ImageView is still around and set bitmap.
@@ -117,6 +113,7 @@ public class MainActivity extends FragmentActivity {
             if (imageViewReference != null && bitmap != null) {
                 final ImageView imageView = imageViewReference.get();
                 if (imageView != null) {
+                    mMemoryCache.put(String.valueOf(data), bitmap);
                     imageView.setImageBitmap(bitmap);
                 }
             }

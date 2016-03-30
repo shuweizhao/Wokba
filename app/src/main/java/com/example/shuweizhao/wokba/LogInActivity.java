@@ -23,13 +23,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -169,30 +166,28 @@ public class LogInActivity extends AppCompatActivity {
 
 
 
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
         private final String mEmail;
         private final String mPassword;
-        private final OkHttpClient client;
         private final Context mContext;
-        private HashMap<String, String> info;
+        private StringBuilder info;
 
         UserLoginTask(String email, String password, Context context) {
             mEmail = email;
             mPassword = password;
-            client = new OkHttpClient();
             mContext = context;
-            info = new HashMap<>();
+            info = new StringBuilder();
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
-                return false;
+                return -1;
             }
 
             // TODO: register the new account here.
@@ -202,39 +197,41 @@ public class LogInActivity extends AppCompatActivity {
                         mPassword);
             }
             catch (IOException e) {
-                System.out.println("unexpected code");
+                return -1;
             }
             System.out.println(response);
             JsonElement jElement = new JsonParser().parse(response);
             JsonObject jsonObject = jElement.getAsJsonObject();
             String status = getStringFromJson("status", jsonObject);
             if (status.equals("login_success")) {
-                info.put("uid", getStringFromJson("uid", jsonObject));
-                info.put("customer", getStringFromJson("customer", jsonObject));
-                info.put("customer_4", getStringFromJson("customer_4", jsonObject));
-                info.put("customer_b", getStringFromJson("customer_b", jsonObject));
-                info.put("points", getStringFromJson("points", jsonObject));
-                info.put("phone", getStringFromJson("phone", jsonObject));
-                info.put("nickname", getStringFromJson("nickname", jsonObject));
-                return true;
+                info.append(getStringFromJson("uid", jsonObject)).append("/n")
+                .append(getStringFromJson("customer", jsonObject)).append("/n")
+                .append(getStringFromJson("customer_4", jsonObject)).append("/n")
+                .append(getStringFromJson("customer_b", jsonObject)).append("/n")
+                .append(getStringFromJson("points", jsonObject)).append("/n")
+                .append(getStringFromJson("phone", jsonObject)).append("/n")
+                .append(getStringFromJson("nickname", jsonObject));
+                return 1;
             }
-            return false;
+            return 0;
         }
 
         @Override
-        protected void onPostExecute(final Boolean success) {
+        protected void onPostExecute(final Integer success) {
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
+            if (success > 0) {
                 Intent i = new Intent(mContext, MainUIActicity.class);
-                for(Map.Entry<String, String> entry : info.entrySet()) {
-                    i.putExtra(entry.getKey(), entry.getValue());
-                }
+                i.putExtra(Intent.EXTRA_TEXT, info.toString());
                 startActivity(i);
-            } else {
+            } else if (success == 0){
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
+            }
+            else {
+                mEmailView.setError(getString(R.string.network_error));
+                mEmailView.requestFocus();
             }
         }
 
@@ -268,7 +265,7 @@ public class LogInActivity extends AppCompatActivity {
                     .url(url)
                     .post(body)
                     .build();
-            Response response = client.newCall(request).execute();
+            Response response = MyHttpClient.getClient().newCall(request).execute();
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
             final String res = response.body().string();
             response.body().close();
