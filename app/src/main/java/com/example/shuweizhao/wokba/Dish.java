@@ -55,7 +55,7 @@ public class Dish {
         sb.append(id).append("#")
                 .append(title).append("#")
                 .append(price).append("#")
-                .append(brief).append("#")
+                .append(descriptions).append("#")
                 .append(ingredient).append("#")
                 .append(unit).append("#")
                 .append(image_path).append("#")
