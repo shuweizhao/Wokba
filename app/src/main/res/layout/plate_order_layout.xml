@@ -8,7 +8,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:weightSum="1">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp">
@@ -19,7 +20,7 @@
                 />
             <ImageButton android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:src="@drawable/ic_arrow_back_24dp"
+                android:src="@drawable/ic_arrow_back_48dp"
                 android:background="@null"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
@@ -45,11 +46,13 @@
             android:layout_height="wrap_content"
             android:text="@string/special_instructions"
             android:paddingLeft="4dp"
+            android:paddingBottom="4dp"
             android:background="@android:color/background_light"/>
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
+            android:paddingTop="4dp"
             android:maxLines="2"
             android:hint="@string/plate_order_notes"
             android:id="@+id/plate_order_notes"
@@ -57,11 +60,12 @@
             android:nextFocusLeft="@id/plate_order_notes"/>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="100dp"
+            android:paddingTop="16dp"
+            android:layout_weight="0.10">
             <Button
-                android:layout_width="40dp"
                 android:layout_height="45dp"
+                android:layout_width="38dp"
                 android:textColor="@color/colorText"
                 android:id="@+id/plate_order_remove"
                 android:text="-"
@@ -73,30 +77,40 @@
             <TextView android:layout_height="45dp"
                 android:layout_width="30dp"
                 android:text="1"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:gravity="center"
                 android:id="@+id/plate_order_count"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/plate_order_remove" />
             <Button
-                android:layout_width="40dp"
                 android:layout_height="45dp"
+                android:layout_width="38dp"
                 android:textColor="@color/colorText"
                 android:text="+"
                 android:textSize="30sp"
                 android:background="@drawable/right_round_button"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/plate_order_count" />
+                android:layout_toEndOf="@+id/plate_order_count"
+                android:id="@+id/plate_order_add"/>
+            <TextView
+                android:layout_width="38dp"
+                android:layout_height="45dp"
+                android:id="@+id/plate_order_unit_price"
+                android:textSize="20sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignStart="@+id/plate_order_order" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Order"
+                style="?android:textAppearanceSmall"
                 android:textColor="@color/colorText"
                 android:layout_marginRight="2dp"
                 android:background="@color/colorPrimary"
-                android:layout_alignBottom="@+id/plate_item_remove"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/plate_order_order"/>
+                android:id="@+id/plate_order_order"
+                android:layout_below="@+id/plate_order_unit_price"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
     </LinearLayout>
 
