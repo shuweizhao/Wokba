@@ -71,18 +71,17 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.plate_order_remove :
                 int ii = Integer.valueOf(count.getText().toString());
-                ii--;
                 if (ii == 1) {
-                    remove.setEnabled(false);
                     remove.setBackground(getResources().getDrawable(R.drawable.left_rount_button));
                 }
                 else {
                     remove.setEnabled(true);
                     remove.setBackground(getResources().getDrawable(R.drawable.left_round_button_click));
-                    remove.setOnClickListener(this);
+                    ii--;
+                    count.setText("" + ii);
+                    price.setText("$" + (ii * unitprice));
                 }
-                count.setText("" + ii);
-                price.setText("$" + (ii * unitprice));
+
                 break;
             case R.id.plate_order_order :
                 break;
