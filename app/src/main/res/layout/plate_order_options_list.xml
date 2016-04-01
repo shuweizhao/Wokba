@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/option_title"
         android:text="@string/action_register"
+        android:textSize="16sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/option_unit_price" />
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/option_brief"
         android:text="@string/action_register"
+        android:textSize="16sp"
         android:layout_below="@+id/option_title"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/option_unit_price" />
@@ -39,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/option_unit_price"
+        android:textSize="16sp"
         android:text="@string/action_register"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />

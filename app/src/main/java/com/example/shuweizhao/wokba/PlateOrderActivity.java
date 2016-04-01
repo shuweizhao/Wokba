@@ -40,6 +40,8 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
     private ImageButton add, remove, back;
     private TableLayout tableLayout;
     private double unitprice;
+    private double optionTotal = 0;
+    private String image_url;
     private DecimalFormat decimalFormat = new DecimalFormat("#.00");
     private Context context;
     @Override
@@ -51,7 +53,8 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
         String[] params = getIntent().getStringExtra(Intent.EXTRA_TEXT).split("#");
         initView();
         context = this;
-        Uri uri = Uri.parse("https://wokba.com/images/plates/" + params[6]);
+        image_url = "https://wokba.com/images/plates/" + params[6];
+        Uri uri = Uri.parse(image_url);
         unitprice = Double.valueOf(params[2]);
         pic.setImageURI(uri);
         title.setText(params[1]);
@@ -116,12 +119,26 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.plate_order_order:
                 Intent intent = new Intent(context, CheckOutActivity.class);
+                String data = serialize(title.getText().toString(), image_url ,count.getText().toString(), unitprice,
+                        optionTotal, notes.getText().toString());
+                intent.putExtra(Intent.EXTRA_TEXT, data);
                 startActivity(intent);
                 break;
 
         }
     }
 
+    private String serialize(String plate_name, String image_path, String plate_number,
+                             Double plate_unit_price, Double total_options, String notes) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(plate_name).append("#")
+                .append(image_path).append("#")
+                .append(plate_number).append("#")
+                .append(plate_unit_price).append("#")
+                .append(total_options).append("#")
+                .append(notes);
+        return sb.toString();
+    }
     private double round(double value, int places) {
             if (places < 0) throw new IllegalArgumentException();
 
@@ -167,12 +184,12 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
 
         }
 
-        private View getView(Option option, int i) {
+        private View getView(final Option option, int i) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View rootView = layoutInflater.inflate(R.layout.plate_order_options_list, null);
             TextView title = (TextView) rootView.findViewById(R.id.option_title);
             TextView brief = (TextView) rootView.findViewById(R.id.option_brief);
-            TextView unitprice = (TextView) rootView.findViewById(R.id.option_unit_price);
+            final TextView unitprice = (TextView) rootView.findViewById(R.id.option_unit_price);
             View line = rootView.findViewById(R.id.option_line);
             if (i == 2) {
                 line.setVisibility(View.GONE);
@@ -184,8 +201,17 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Double total = Double.valueOf(price.getText().toString().substring(1));
+                    Double uprice = Double.valueOf(unitprice.getText().toString().substring(1));
                     if (checkBox.isChecked()) {
-
+                        total += uprice;
+                        optionTotal += uprice;
+                        price.setText("$"+decimalFormat.format(total));
+                    }
+                    else {
+                        total -= uprice;
+                        optionTotal -= uprice;
+                        price.setText("$"+decimalFormat.format(total));
                     }
                 }
             });
