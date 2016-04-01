@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#F57C00</color>
     <color name="colorAccent">#FFC107</color>
     <color name="colorPrimaryLight">#FFE0B2</color>
+    <color name="colorSecondTitle">#FFECB3</color>
     <color name="colorText">#FFFFFF</color>
+    <color name="colorText2">#050505</color>
     <color name="profileBackground">#D5D5D5</color>
     <color name="colorFloatingButton">#03A9F4</color>
     <color name="fbutton_color_turquoise">#1abc9c</color>

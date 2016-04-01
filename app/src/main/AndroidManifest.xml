@@ -37,6 +37,8 @@
         </activity>
         <activity android:name=".PlateOrderActivity">
         </activity>
+        <activity android:name=".CheckOutActivity">
+        </activity>
     </application>
 
 </manifest>

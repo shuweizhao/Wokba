@@ -23,6 +23,9 @@
     <string name="order_history">Order History</string>
     <string name="permission_rationale">"Location permissions are needed."</string>
     <string name="network_error">No network connection availabel, please check your network</string>
-    <string name="special_instructions">SPECIAL INSTRUCTIONS</string>
+    <string name="special_instructions">SPECIAL INSTRUCTIONS : </string>
     <string name="plate_order_notes">Add a note(extra sauce, no onions, etc.)</string>
+    <string name="ingredients">INGREDIENTS : </string>
+    <string name="description">DESCRIPTION : </string>
+    <string name="options">ADDITIONAL OPTIONS : </string>
 </resources>
