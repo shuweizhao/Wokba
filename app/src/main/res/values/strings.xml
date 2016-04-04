@@ -28,4 +28,14 @@
     <string name="ingredients">INGREDIENTS : </string>
     <string name="description">DESCRIPTION : </string>
     <string name="options">ADDITIONAL OPTIONS : </string>
+    <string name="new_order">New Order</string>
+    <string name="check_out_options">Options</string>
+    <string name="check_out_tax">Tax</string>
+    <string name="check_out_total">Total with Tax</string>
+    <string name="no_notes">No Notes</string>
+    <string name="place_order">Place Order</string>
+    <string name="check_out_final_price">Final Price</string>
+    <string name="check_out_no_card">No Binding Card</string>
+    <string name="me">Me</string>
+    <string name="my_favorites">My Favorites</string>
 </resources>

@@ -1,6 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+    <TextView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_order"
+        android:textSize="25sp"
+        android:gravity="center"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/check_out_pic"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            />
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enjoy_now"
+            android:textSize="20sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/check_out_title"
+            android:paddingLeft="8dp"
+            android:layout_toEndOf="@+id/check_out_pic" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enjoy_now"
+            android:id="@+id/check_out_count"
+            android:layout_below="@+id/check_out_pic"
+            android:layout_alignEnd="@+id/check_out_pic" />
+        <TextView android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/check_out_notes"
+            android:text="@string/enjoy_now"
+            android:paddingLeft="8dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/check_out_pic" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/enjoy_now"
+            android:id="@+id/check_out_plate_price"
+            android:layout_below="@+id/check_out_pic"
+            android:layout_alignEnd="@+id/check_out_title"
+            />
+    </RelativeLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1"
+        android:padding="4dp">
+        <TableRow
+            android:padding="8dp">
+            <TextView
+                android:text="@string/check_out_options"
+                android:layout_gravity="right"
+                />
+            <TextView
+                android:text="@string/action_register"
+                android:id="@+id/check_out_options"
+                android:layout_gravity="center"/>
+        </TableRow>
+        <TableRow
+            android:padding="8dp">
+            <TextView
+                android:text="@string/check_out_tax"
+                android:layout_gravity="right"
+                />
+            <TextView
+                android:id="@+id/check_out_tax"
+                android:layout_gravity="center"/>
+        </TableRow>
+        <TableRow
+            android:padding="8dp">
+            <TextView
+                android:text="@string/check_out_total"
+                android:layout_gravity="right"
+                />
+            <TextView
+                android:id="@+id/check_out_total"
+                android:layout_gravity="center"/>
+        </TableRow>
+    </TableLayout>
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/place_order"
+            android:id="@+id/button2"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:id="@+id/linearLayout2">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3"
+                android:layout_gravity="bottom" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/check_out_no_card"
+                android:id="@+id/textView"
+                android:layout_gravity="bottom" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/check_out_final_total_price"
+            android:layout_above="@+id/linearLayout2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_out_final_price"
+            android:layout_above="@+id/check_out_final_total_price"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"/>
+    </RelativeLayout>
 </LinearLayout>

@@ -26,11 +26,15 @@ public class User {
         this.nickname = nickname;
     }
 
-    public static void addFavorite(String[] params) {
+    public static void addFavorite(String[] store) {
         if (favorites == null) {
             favorites = new ArrayList<>();
         }
-        favorites.add(params);
+        favorites.add(store);
+    }
+
+    public static ArrayList<String[]> getFavorites() {
+        return favorites;
     }
 
     public static void removeFavorite(String[] params) {
