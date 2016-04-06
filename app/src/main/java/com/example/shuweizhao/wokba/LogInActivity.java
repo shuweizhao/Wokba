@@ -224,6 +224,7 @@ public class LogInActivity extends AppCompatActivity {
             if (success > 0) {
                 Intent i = new Intent(mContext, MainUIActicity.class);
                 i.putExtra(Intent.EXTRA_TEXT, info.toString());
+                User.setEmailandPassword(mEmail, mPassword);
                 startActivity(i);
             } else if (success == 0){
                 mPasswordView.setError(getString(R.string.error_incorrect_password));

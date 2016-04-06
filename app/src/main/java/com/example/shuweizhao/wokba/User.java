@@ -13,6 +13,8 @@ public class User {
     private static String points;
     private static String phone;
     private static String nickname;
+    private static String memail;
+    private static String mpassword;
 
     private static ArrayList<String[]> favorites;
     User(String uid, String customer, String customer_4, String customer_b,
@@ -39,5 +41,22 @@ public class User {
 
     public static void removeFavorite(String[] params) {
 
+    }
+
+    public static boolean hasBindCard() {
+        return false;
+    }
+
+    public static void setEmailandPassword(String email, String password) {
+        memail = email;
+        mpassword = password;
+    }
+
+    public static String getEmail() {
+        return memail;
+    }
+
+    public static  String getPassword() {
+        return mpassword;
     }
 }
