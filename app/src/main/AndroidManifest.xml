@@ -41,6 +41,8 @@
         </activity>
         <activity android:name=".FavoriteActivity">
         </activity>
+        <activity android:name=".BindCardActivity">
+        </activity>
     </application>
 
 </manifest>
