@@ -11,7 +11,7 @@
 
     <style name="TextField" parent="@android:style/Widget.EditText">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textColor">@color/colorText2</item>
     </style>
 
     <style name="CardNumber" parent="@style/TextField">
@@ -31,14 +31,9 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">12dp</item>
         <item name="android:paddingBottom">12dp</item>
-        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textColor">@color/colorText2</item>
     </style>
 
-    <style name="Save" parent="@style/Button">
-        <item name="android:layout_width">160dp</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:text">@string/save</item>
-    </style>
 
     <style name="Spinner" parent="@android:style/Widget.Spinner">
         <item name="android:layout_height">wrap_content</item>
@@ -47,10 +42,10 @@
     <style name="SpinnerItem" parent="@android:style/Widget.TextView.SpinnerItem">
 
         <item name="android:textAppearance">@style/TextAppearance.SpinnerItem</item>
-        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textColor">@color/colorText2</item>
     </style>
     <style name="TextAppearance.SpinnerItem" parent="@android:style/TextAppearance.Widget.TextView.SpinnerItem">
-        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textColor">@color/colorText2</item>
     </style>
 
 
@@ -78,8 +73,8 @@
         <item name="android:layout_marginBottom">5dp</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:paddingLeft">3dp</item>
-        <item name="android:textSize">18dp</item>
-        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorText2</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 

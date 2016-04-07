@@ -15,8 +15,8 @@ public class User {
     private static String nickname;
     private static String memail;
     private static String mpassword;
-
     private static ArrayList<String[]> favorites;
+
     User(String uid, String customer, String customer_4, String customer_b,
          String points, String phone, String nickname) {
         this.uid = uid;
@@ -35,9 +35,6 @@ public class User {
         favorites.add(store);
     }
 
-    public static ArrayList<String[]> getFavorites() {
-        return favorites;
-    }
 
     public static void removeFavorite(String[] params) {
 
@@ -47,10 +44,6 @@ public class User {
         return false;
     }
 
-    public static void setEmailandPassword(String email, String password) {
-        memail = email;
-        mpassword = password;
-    }
 
     public static String getEmail() {
         return memail;
@@ -59,4 +52,18 @@ public class User {
     public static  String getPassword() {
         return mpassword;
     }
+
+    public static String getUid() {
+        return uid;
+    }
+
+    public static ArrayList<String[]> getFavorites() {
+        return favorites;
+    }
+
+    public static void setEmailandPassword(String email, String password) {
+        memail = email;
+        mpassword = password;
+    }
+
 }
