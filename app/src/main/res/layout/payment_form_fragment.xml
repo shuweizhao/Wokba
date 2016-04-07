@@ -10,7 +10,7 @@
     <EditText android:id="@+id/number" style="@style/CardNumber" android:nextFocusDown="@+id/expMonth" android:nextFocusRight="@+id/expMonth" android:nextFocusForward="@+id/expMonth" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 

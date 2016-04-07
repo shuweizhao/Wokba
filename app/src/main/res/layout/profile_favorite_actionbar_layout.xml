@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:text="@string/my_favorites"
             android:textSize="18sp"
+            android:id="@+id/profile_action_title"
             android:gravity="center_vertical"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"

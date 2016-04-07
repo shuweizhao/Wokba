@@ -16,6 +16,7 @@ public class User {
     private static String memail;
     private static String mpassword;
     private static ArrayList<String[]> favorites;
+    private static com.stripe.android.model.Token mtoken;
 
     User(String uid, String customer, String customer_4, String customer_b,
          String points, String phone, String nickname) {
@@ -64,6 +65,14 @@ public class User {
     public static void setEmailandPassword(String email, String password) {
         memail = email;
         mpassword = password;
+    }
+
+    public static void setToken(com.stripe.android.model.Token token) {
+        mtoken = token;
+    }
+
+    public static String getCardLast4() {
+        return mtoken.getCard().getLast4();
     }
 
 }

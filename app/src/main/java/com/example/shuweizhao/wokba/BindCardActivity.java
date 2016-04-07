@@ -1,9 +1,17 @@
 package com.example.shuweizhao.wokba;
 
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,15 +33,77 @@ import okhttp3.Response;
  */
 public class BindCardActivity extends AppCompatActivity {
     public static final String PUBLISHABLE_KEY = "pk_live_XqcCUGIITvxiljLP924M6DzO";
-
+    private static final String cardending = "Card ending in ";
     private ProgressDialogFragment progressFragment;
-
+    private TextView cardInfo;
+    private Button add, change, delete;
+    private FrameLayout frameLayout;
+    private PaymentFormFragment paymentFormFragment;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bindcard_activity_layout);
 
         progressFragment = ProgressDialogFragment.newInstance(R.string.progressMessage);
+        cardInfo = (TextView) findViewById(R.id.card_info);
+        if (User.hasBindCard()) {
+            cardInfo.setText(cardending + User.getCardLast4());
+        }
+        else {
+            cardInfo.setText(getString(R.string.check_out_no_card));
+        }
+        add = (Button) findViewById(R.id.payment_add);
+        delete = (Button) findViewById(R.id.payment_delete);
+        frameLayout = (FrameLayout) findViewById(R.id.payment_form);
+        setCustomActionBar();
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                frameLayout.setVisibility(View.VISIBLE);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                if (paymentFormFragment == null) {
+                    paymentFormFragment = new PaymentFormFragment();
+                    fragmentTransaction.add(R.id.payment_form, paymentFormFragment);
+                }
+                else {
+                    fragmentTransaction.show(paymentFormFragment);
+                }
+                fragmentTransaction.commit();
+                add.setVisibility(View.GONE);
+                delete.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setCustomActionBar() {
+        getSupportActionBar().setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_CUSTOM);
+        LayoutInflater inflator = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.profile_favorite_actionbar_layout, null);
+        TextView title = (TextView) v.findViewById(R.id.profile_action_title);
+        TextView back = (TextView) v.findViewById(R.id.profile_back);
+        ImageView iv = (ImageView) v.findViewById(R.id.imageView4);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        title.setText("Payment");
+        getSupportActionBar().setCustomView(v);
+    }
+
+
+    public void setButtonsVisible() {
+        add.setVisibility(View.VISIBLE);
+        delete.setVisibility(View.VISIBLE);
+        frameLayout.setVisibility(View.GONE);
     }
 
     public void saveCreditCard(PaymentForm form) {
@@ -55,7 +125,7 @@ public class BindCardActivity extends AppCompatActivity {
                         public void onSuccess(Token token) {
                             System.out.println(token.getCard().getLast4() + "" + token.getId());
                             finishProgress();
-                            FetchTask fetchTask = new FetchTask(token.getId());
+                            FetchTask fetchTask = new FetchTask(token);
                             fetchTask.execute();
 
                         }
@@ -89,8 +159,8 @@ public class BindCardActivity extends AppCompatActivity {
     }
 
     private class FetchTask extends AsyncTask<Void, Void, String>{
-        private String stripeToken;
-        FetchTask(String stripeToken) {
+        private Token stripeToken;
+        FetchTask(Token stripeToken) {
             this.stripeToken = stripeToken;
         }
 
@@ -98,7 +168,7 @@ public class BindCardActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             String response = "";
             try {
-                response = post("https://wokba.com/api/payment.php", stripeToken);
+                response = post("https://wokba.com/api/payment.php", stripeToken.getId());
             } catch (IOException e) {
                 return null;
             }
@@ -114,10 +184,12 @@ public class BindCardActivity extends AppCompatActivity {
             String status = jsonObject.get("status").toString();
             status = status.substring(1, status.length() - 1);
             if (status.equals("binding_success")) {
-
+                User.setToken(stripeToken);
+                cardInfo.setText(cardending + User.getCardLast4());
+                setButtonsVisible();
             }
             else {
-
+                handleError("Invalid card information, Please check your information");
             }
         }
 

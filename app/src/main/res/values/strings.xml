@@ -48,6 +48,9 @@
     <string name="save">Save</string>
     <string name="cvc">CVC</string>
     <string name="ok">OK</string>
+    <string name="add">Add/Change</string>
+    <string name="change">Change</string>
+    <string name="delete">Delete</string>
     <string-array name="currency_array">
         <item>Currency (optional)</item>
         <item>Unspecified</item>
