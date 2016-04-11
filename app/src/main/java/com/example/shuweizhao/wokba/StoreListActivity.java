@@ -85,7 +85,7 @@ public class StoreListActivity extends Activity {
             image.setImageURI(uri);
             ranking.setText(params[params.length - 1]);
             thumbup.setText(params[6]);
-            distance.setText(params[params.length - 2]);
+            distance.setText(params[params.length - 2] + " miles");
             return rootView;
         }
 

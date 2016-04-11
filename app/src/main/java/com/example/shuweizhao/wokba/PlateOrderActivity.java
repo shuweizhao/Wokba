@@ -6,13 +6,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.text.DecimalFormat;
 
@@ -44,7 +49,8 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
         image_url = "https://wokba.com/images/plates/" + params[6];
         Uri uri = Uri.parse(image_url);
         unitprice = Double.valueOf(params[2]);
-        pic.setImageURI(uri);
+        setResizedPic(uri);
+
         title.setText(params[1]);
         ingredients.setText(params[4]);
         description.setText(params[3]);
@@ -56,7 +62,19 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
         remove.setOnClickListener(this);
 
     }
+    private void setResizedPic(Uri uri) {
+        final DisplayMetrics dm = getResources().getDisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(uri)
+                .setResizeOptions(new ResizeOptions(dm.widthPixels / 4, dm.heightPixels / 4))
+                .build();
 
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setOldController(pic.getController())
+                .setImageRequest(imageRequest)
+                .build();
+        pic.setController(controller);
+    }
     private void initView() {
         pic = (SimpleDraweeView) findViewById(R.id.plate_order_pic);
         title = (TextView) findViewById(R.id.plate_order_title);
@@ -106,7 +124,7 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
                 Intent intent = new Intent(context, CheckOutActivity.class);
                 String data = serialize(title.getText().toString(), image_url ,count.getText().toString(), unitprice,
                         optionTotal, notes.getText().toString());
-                intent.putExtra(Intent.EXTRA_TEXT, data);
+                intent.putExtra(Intent.EXTRA_TEXT, storeAndPlate + "*" + data);
                 startActivity(intent);
                 break;
 

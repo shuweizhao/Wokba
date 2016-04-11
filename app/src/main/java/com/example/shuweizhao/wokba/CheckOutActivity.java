@@ -19,6 +19,7 @@ import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
@@ -33,6 +34,7 @@ public class CheckOutActivity extends AppCompatActivity {
     private SimpleDraweeView pic;
     private Context context;
     private Button placeorder, optionsButton;
+    private String[] storeInfo, plateInfo, params;
 
     private final double TAX_RATE = 0.0667;
     private static final String cardending = "Card ending in ";
@@ -41,9 +43,14 @@ public class CheckOutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.check_out_layout);
-        String[] params = getIntent().getStringExtra(Intent.EXTRA_TEXT).split("#");
+        String[] p = getIntent().getStringExtra(Intent.EXTRA_TEXT).split("\\*");
+        storeInfo = p[0].split("#");
+        plateInfo = p[1].split("#");
+        params = p[2].split("#");
         initView(params);
         context = this;
+        FetchOptionTask fetchOptionTask = new FetchOptionTask(plateInfo[0]);
+        fetchOptionTask.execute();
     }
 
     private void initView(String[] params) {
@@ -96,6 +103,14 @@ public class CheckOutActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 1) {
+            System.out.println(data.getStringExtra(Intent.EXTRA_TEXT));
+        }
+    }
+
     private void setCustomActionBar() {
         getSupportActionBar().setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_CUSTOM);
         LayoutInflater inflator = (LayoutInflater) this
@@ -129,10 +144,23 @@ public class CheckOutActivity extends AppCompatActivity {
             super.onPostExecute(s);
             JsonElement jElement = new JsonParser().parse(s);
             if (!jElement.isJsonObject()) {
-                Option[] options = new Gson().fromJson(jElement, Option[].class);
-
+                final Option[] options = new Gson().fromJson(jElement, Option[].class);
+                optionsButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ArrayList<String> op = new ArrayList<>();
+                        for (int i = 0; i < options.length; i++) {
+                            op.add(options[i].toString());
+                        }
+                        Intent intent = new Intent(context, OptionActivity.class);
+                        intent.putStringArrayListExtra(Intent.EXTRA_TEXT, op);
+                        startActivityForResult(intent, 1);
+                    }
+                });
             }
-
+            else {
+                optionsButton.setAlpha(0.3f);
+            }
         }
 
 

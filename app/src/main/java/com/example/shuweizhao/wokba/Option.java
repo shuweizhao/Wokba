@@ -28,4 +28,13 @@ public class Option {
         this.brief = brief;
     }
 
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(id).append("#")
+                .append(title).append("#")
+                .append(price).append("#")
+                .append(brief).append("#");
+        return sb.toString();
+    }
+
 }
