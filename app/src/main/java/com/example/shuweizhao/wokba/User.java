@@ -6,27 +6,26 @@ import java.util.ArrayList;
  * Created by shuweizhao on 3/28/16.
  */
 public class User {
-    private static String uid;
-    private static String customer;
-    private static String customer_4;
-    private static String customer_b;
-    private static String points;
-    private static String phone;
-    private static String nickname;
+    private static String m_uid;
+    private static String m_customer;
+    private static String m_customer_4;
+    private static String m_customer_b;
+    private static String m_points;
+    private static String m_phone;
+    private static String m_nickname;
     private static String memail;
     private static String mpassword;
     private static ArrayList<String[]> favorites;
-    private static com.stripe.android.model.Token mtoken;
 
-    User(String uid, String customer, String customer_4, String customer_b,
+    public static void init(String uid, String customer, String customer_4, String customer_b,
          String points, String phone, String nickname) {
-        this.uid = uid;
-        this.customer = customer;
-        this.customer_4 = customer_4;
-        this.customer_b = customer_b;
-        this.points = points;
-        this.phone = phone;
-        this.nickname = nickname;
+        m_uid = uid;
+        m_customer = customer;
+        m_customer_4 = customer_4;
+        m_customer_b = customer_b;
+        m_points = points;
+        m_phone = phone;
+        m_nickname = nickname;
     }
 
     public static void addFavorite(String[] store) {
@@ -42,7 +41,7 @@ public class User {
     }
 
     public static boolean hasBindCard() {
-        return false;
+        return !m_customer.equals("NONE");
     }
 
 
@@ -55,7 +54,7 @@ public class User {
     }
 
     public static String getUid() {
-        return uid;
+        return m_uid;
     }
 
     public static ArrayList<String[]> getFavorites() {
@@ -67,12 +66,16 @@ public class User {
         mpassword = password;
     }
 
-    public static void setToken(com.stripe.android.model.Token token) {
-        mtoken = token;
+    public static void setCustomer(String customer) {
+        User.m_customer = customer;
+    }
+
+    public static void setCustomer_b(String customer_b) {
+        User.m_customer_b = customer_b;
     }
 
     public static String getCardLast4() {
-        return mtoken.getCard().getLast4();
+        return m_customer_4;
     }
 
 }

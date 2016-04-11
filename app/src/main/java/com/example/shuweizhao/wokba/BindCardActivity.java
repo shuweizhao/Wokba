@@ -64,13 +64,18 @@ public class BindCardActivity extends AppCompatActivity {
                 if (paymentFormFragment == null) {
                     paymentFormFragment = new PaymentFormFragment();
                     fragmentTransaction.add(R.id.payment_form, paymentFormFragment);
-                }
-                else {
+                } else {
                     fragmentTransaction.show(paymentFormFragment);
                 }
                 fragmentTransaction.commit();
                 add.setVisibility(View.GONE);
                 delete.setVisibility(View.GONE);
+            }
+        });
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
@@ -125,7 +130,7 @@ public class BindCardActivity extends AppCompatActivity {
                         public void onSuccess(Token token) {
                             System.out.println(token.getCard().getLast4() + "" + token.getId());
                             finishProgress();
-                            FetchTask fetchTask = new FetchTask(token);
+                            FetchTask fetchTask = new FetchTask("https://wokba.com/api/payment.php", token);
                             fetchTask.execute();
 
                         }
@@ -160,15 +165,18 @@ public class BindCardActivity extends AppCompatActivity {
 
     private class FetchTask extends AsyncTask<Void, Void, String>{
         private Token stripeToken;
-        FetchTask(Token stripeToken) {
+        private String url;
+
+        FetchTask(String url, Token stripeToken) {
             this.stripeToken = stripeToken;
+            this.url = url;
         }
 
         @Override
         protected String doInBackground(Void... params) {
             String response = "";
             try {
-                response = post("https://wokba.com/api/payment.php", stripeToken.getId());
+                response = post(url, stripeToken.getId());
             } catch (IOException e) {
                 return null;
             }
@@ -184,8 +192,11 @@ public class BindCardActivity extends AppCompatActivity {
             String status = jsonObject.get("status").toString();
             status = status.substring(1, status.length() - 1);
             if (status.equals("binding_success")) {
-                User.setToken(stripeToken);
                 cardInfo.setText(cardending + User.getCardLast4());
+                String customerToken = jsonObject.get("cid").toString();
+                String customerBank = jsonObject.get("cb").toString();
+                User.setCustomer(customerToken.substring(1, customerToken.length() - 1));
+                User.setCustomer_b(customerBank.substring(1, customerToken.length() - 1));
                 setButtonsVisible();
             }
             else {

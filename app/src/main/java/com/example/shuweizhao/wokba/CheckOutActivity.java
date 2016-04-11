@@ -23,7 +23,7 @@ public class CheckOutActivity extends AppCompatActivity {
     private Context context;
     private Button placeorder;
 
-    private final double TAX_RATE = 0.0675;
+    private final double TAX_RATE = 0.0667;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +70,7 @@ public class CheckOutActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (User.hasBindCard()) {
+
                 } else {
                     Intent intent = new Intent(context, BindCardActivity.class);
                     startActivity(intent);
