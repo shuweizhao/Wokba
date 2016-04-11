@@ -43,6 +43,8 @@
         </activity>
         <activity android:name=".BindCardActivity">
         </activity>
+        <activity android:name=".OrderSuccessActivity">
+        </activity>
     </application>
 
 </manifest>

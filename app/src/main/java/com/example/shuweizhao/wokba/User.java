@@ -49,12 +49,16 @@ public class User {
         return memail;
     }
 
-    public static  String getPassword() {
+    public static String getPassword() {
         return mpassword;
     }
 
     public static String getUid() {
         return m_uid;
+    }
+
+    public static String getCustomer() {
+        return m_customer;
     }
 
     public static ArrayList<String[]> getFavorites() {

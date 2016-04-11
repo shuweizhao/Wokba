@@ -74,13 +74,6 @@
             android:visibility="gone"
             android:background="@color/colorSecondTitle"
             />
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/plate_order_options_list"
-            android:visibility="gone"
-            android:layout_marginBottom="32dp"
-            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

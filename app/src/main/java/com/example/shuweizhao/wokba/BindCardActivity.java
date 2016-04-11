@@ -75,7 +75,8 @@ public class BindCardActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                FetchDeleteTask ff = new FetchDeleteTask();
+                ff.execute();
             }
         });
     }
@@ -130,7 +131,7 @@ public class BindCardActivity extends AppCompatActivity {
                         public void onSuccess(Token token) {
                             System.out.println(token.getCard().getLast4() + "" + token.getId());
                             finishProgress();
-                            FetchTask fetchTask = new FetchTask("https://wokba.com/api/payment.php", token);
+                            FetchTask fetchTask = new FetchTask("create", token);
                             fetchTask.execute();
 
                         }
@@ -196,7 +197,7 @@ public class BindCardActivity extends AppCompatActivity {
                 String customerToken = jsonObject.get("cid").toString();
                 String customerBank = jsonObject.get("cb").toString();
                 User.setCustomer(customerToken.substring(1, customerToken.length() - 1));
-                User.setCustomer_b(customerBank.substring(1, customerToken.length() - 1));
+                User.setCustomer_b(customerBank.substring(1, customerBank.length() - 1));
                 setButtonsVisible();
             }
             else {
@@ -204,7 +205,7 @@ public class BindCardActivity extends AppCompatActivity {
             }
         }
 
-        private String post(String url, String stripeToken) throws IOException {
+        private String post(String type, String stripeToken) throws IOException {
             long time = System.currentTimeMillis() / 1000L;
             StringBuilder sb = new StringBuilder();
             sb.append(User.getUid())
@@ -217,12 +218,58 @@ public class BindCardActivity extends AppCompatActivity {
                     .add("id", User.getUid())
                     .add("stripeToken", stripeToken)
                     .add("description", User.getEmail())
-                    .add("type", "create")
+                    .add("type", type)
                     .add("version", "1.10")
                     .add("time", String.valueOf(time))
                     .add("token", token).build();
             Request request = new Request.Builder()
-                    .url(url)
+                    .url("https://wokba.com/api/payment.php")
+                    .post(body)
+                    .build();
+            Response response = MyHttpClient.getClient().newCall(request).execute();
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            final String res = response.body().string();
+            response.body().close();
+            return res;
+        }
+    }
+
+
+    private class FetchDeleteTask extends AsyncTask<Void, Void, String> {
+
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String response = "";
+            try {
+                response = post();
+            } catch (IOException e) {
+                return null;
+            }
+            System.out.println(response);
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        private String post() throws IOException {
+            long time = System.currentTimeMillis() / 1000L;
+            StringBuilder sb = new StringBuilder();
+            sb.append(User.getUid())
+                    .append(String.valueOf(time))
+                    .append(User.getCustomer());
+            String token = Encryption.encryptData(sb.toString());
+            RequestBody body = new FormBody.Builder()
+                    .add("id", User.getUid())
+                    .add("customer", User.getCustomer())
+                    .add("type", "delete")
+                    .add("time", String.valueOf(time))
+                    .add("token", token).build();
+            Request request = new Request.Builder()
+                    .url("https://wokba.com/api/payment.php")
                     .post(body)
                     .build();
             Response response = MyHttpClient.getClient().newCall(request).execute();
