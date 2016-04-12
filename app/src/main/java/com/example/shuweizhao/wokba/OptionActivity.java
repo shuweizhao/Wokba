@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,23 +20,42 @@ import java.util.ArrayList;
  */
 public class OptionActivity extends AppCompatActivity {
     private MyAdapter myAdapter;
+    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.option_activity_layout);
+        getSupportActionBar().hide();
         ArrayList<String> option = getIntent().getStringArrayListExtra(Intent.EXTRA_TEXT);
         ListView lv = (ListView) findViewById(R.id.option_list);
         myAdapter = new MyAdapter(option, this);
         lv.setAdapter(myAdapter);
+
+        button = (Button) findViewById(R.id.option_save);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < myAdapter.getCount(); i++) {
+                    sb.append(myAdapter.getCount(i)).append("#");
+                }
+                Intent i = new Intent();
+                i.putExtra(Intent.EXTRA_TEXT, sb.toString());
+                setResult(RESULT_OK, i);
+                finish();
+            }
+        });
     }
 
     private class MyAdapter extends BaseAdapter{
         private ArrayList<String> option;
         private Context context;
+        private ArrayList<TextView> rootView;
 
         MyAdapter(ArrayList<String> option, Context context) {
             this.option = option;
             this.context = context;
+            rootView = new ArrayList<>();
         }
         @Override
         public int getCount() {
@@ -61,11 +81,11 @@ public class OptionActivity extends AppCompatActivity {
             TextView brief = (TextView) view.findViewById(R.id.option_list_brief);
             TextView unitprice = (TextView) view.findViewById(R.id.option_list_unit_price);
             final TextView cnt = (TextView) view.findViewById(R.id.option_list_cnt);
-
+            rootView.add(cnt);
             title.setText(params[1]);
             brief.setText(params[2]);
             unitprice.setText(params[3]);
-            cnt.setText("1");
+            cnt.setText("0");
 
             ImageButton add = (ImageButton) view.findViewById(R.id.option_list_add);
             ImageButton remove = (ImageButton) view.findViewById(R.id.option_list_remove);
@@ -92,9 +112,7 @@ public class OptionActivity extends AppCompatActivity {
         }
 
         public String getCount(int position) {
-            View v = getView(position, null, null);
-            TextView tv = (TextView) v.findViewById(R.id.option_list_cnt);
-            return tv.getText().toString();
+            return rootView.get(position).getText().toString();
         }
 
     }
@@ -107,7 +125,8 @@ public class OptionActivity extends AppCompatActivity {
             sb.append(myAdapter.getCount(i)).append("#");
         }
         Intent i = new Intent();
-        i.putExtra(Intent.EXTRA_TEXT, sb.toString());
-        setResult(1, i);
+        i.putExtra("optionsCount", sb.toString());
+        setResult(RESULT_OK, i);
+        finish();
     }
 }

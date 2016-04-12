@@ -106,7 +106,7 @@ public class CheckOutActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == 1) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
             System.out.println(data.getStringExtra(Intent.EXTRA_TEXT));
         }
     }

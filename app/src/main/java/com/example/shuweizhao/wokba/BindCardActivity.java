@@ -266,6 +266,7 @@ public class BindCardActivity extends AppCompatActivity {
                     .add("id", User.getUid())
                     .add("customer", User.getCustomer())
                     .add("type", "delete")
+                    .add("version", "1.10")
                     .add("time", String.valueOf(time))
                     .add("token", token).build();
             Request request = new Request.Builder()
