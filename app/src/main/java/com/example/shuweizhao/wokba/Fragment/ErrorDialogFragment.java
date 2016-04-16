@@ -1,9 +1,11 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+
+import com.example.shuweizhao.wokba.R;
 
 /**
  * Created by shuweizhao on 4/6/16.

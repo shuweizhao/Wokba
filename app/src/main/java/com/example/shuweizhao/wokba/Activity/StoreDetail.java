@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.shuweizhao.wokba.Dish;
+import com.example.shuweizhao.wokba.Encryption;
+import com.example.shuweizhao.wokba.MyHttpClient;
+import com.example.shuweizhao.wokba.R;
+import com.example.shuweizhao.wokba.User;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -13,6 +13,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.shuweizhao.wokba.Encryption;
+import com.example.shuweizhao.wokba.Fragment.ErrorDialogFragment;
+import com.example.shuweizhao.wokba.MyHttpClient;
+import com.example.shuweizhao.wokba.PaymentForm;
+import com.example.shuweizhao.wokba.Fragment.PaymentFormFragment;
+import com.example.shuweizhao.wokba.Fragment.ProgressDialogFragment;
+import com.example.shuweizhao.wokba.R;
+import com.example.shuweizhao.wokba.User;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -129,6 +137,7 @@ public class BindCardActivity extends AppCompatActivity {
                     PUBLISHABLE_KEY,
                     new TokenCallback() {
                         public void onSuccess(Token token) {
+                            User.setCustomer_4(token.getCard().getLast4());
                             System.out.println(token.getCard().getLast4() + "" + token.getId());
                             finishProgress();
                             FetchTask fetchTask = new FetchTask("create", token);
@@ -253,6 +262,14 @@ public class BindCardActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            JsonElement jElement = new JsonParser().parse(s);
+            JsonObject jsonObject = jElement.getAsJsonObject();
+            String status = jsonObject.get("status").toString();
+            status = status.substring(1, status.length() - 1);
+            if(status.equals("Delete_success")) {
+                User.clearCardInfo();
+                cardInfo.setText(getString(R.string.check_out_no_card));
+            }
         }
 
         private String post() throws IOException {

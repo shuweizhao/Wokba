@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

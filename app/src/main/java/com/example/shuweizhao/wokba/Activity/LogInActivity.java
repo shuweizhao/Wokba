@@ -1,8 +1,14 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -10,9 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.example.shuweizhao.wokba.Encryption;
+import com.example.shuweizhao.wokba.MyHttpClient;
+import com.example.shuweizhao.wokba.R;
+import com.example.shuweizhao.wokba.User;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -29,25 +38,23 @@ import okhttp3.Response;
 /**
  * Created by shuweizhao on 3/23/16.
  */
-public class SignUpActivity extends AppCompatActivity {
+public class LogInActivity extends AppCompatActivity {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =  Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-    private EditText mPasswordView;
+    private TextInputEditText mPasswordView;
     private AutoCompleteTextView mEmailView;
-    private EditText mPhoneView;
-
-    private UserRegisterTask mAuthTask;
-    private Context context;
+    private View mLoginFormView;
+    private View mProgressView;
+    private UserLoginTask mAuthTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up_layout);
+        setContentView(R.layout.log_in_layout);
         showActionBar();
-
         mEmailView = (AutoCompleteTextView)findViewById(R.id.email);
-        mPasswordView = (EditText)findViewById(R.id.password);
-        mPhoneView = (EditText)findViewById(R.id.phone_number);
-        context = SignUpActivity.this;
+        mPasswordView = (TextInputEditText)findViewById(R.id.password);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
         Button signButton = (Button)findViewById(R.id.email_sign_in_button);
         signButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void showActionBar() {
         LayoutInflater inflator = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.register_menu_layout, null);
+        View v = inflator.inflate(R.layout.login_menu_layout, null);
         ImageButton btn = (ImageButton)v.findViewById(R.id.log_in_back);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,7 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowHomeEnabled (false);
+        actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setCustomView(v);
@@ -80,22 +87,13 @@ public class SignUpActivity extends AppCompatActivity {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
-        mPhoneView.setError(null);
+
         // Store values at the time of the login attempt.
         final String email = mEmailView.getText().toString();
         final String password = mPasswordView.getText().toString();
-        final String phone = mPhoneView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
-
-        // Check for a valid phone number, if the user entered one
-        if (TextUtils.isEmpty(phone) ||
-                (!TextUtils.isEmpty(phone) && !isPhoneNumberValid(phone))) {
-            mPhoneView.setError(getString(R.string.error_invalid_phone));
-            focusView = mPhoneView;
-            cancel = true;
-        }
 
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password) ||
@@ -121,9 +119,10 @@ public class SignUpActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            mPhoneView.setText(formattedPhone(phone));
-            // perform the user login attempt
-            mAuthTask = new UserRegisterTask(email, password, phone);
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            showProgress(true);
+            mAuthTask = new UserLoginTask(email, password, this);
             mAuthTask.execute();
         }
     }
@@ -137,70 +136,85 @@ public class SignUpActivity extends AppCompatActivity {
         return password.length() >= 6;
     }
 
-    private boolean isPhoneNumberValid(String phoneNumber) {
-        if (phoneNumber.matches("\\d{10}")) return true;
-            //validating phone number with -, . or spaces
-        else if(phoneNumber.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}")) return true;
-            //validating phone number with extension length from 3 to 5
-        else if(phoneNumber.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}")) return true;
-            //validating phone number where area code is in braces ()
-        else if(phoneNumber.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}")) return true;
-            //return false if nothing matches the input
-        else return false;
-    }
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-    private String formattedPhone(String phone) {
-        if (phone.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}")) {
-            return phone;
+            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append(phone.substring(0,3)).append("-");
-        sb.append(phone.substring(3,6)).append("-");
-        sb.append(phone.substring(6));
-        return sb.toString();
     }
 
-    public class UserRegisterTask extends AsyncTask<Void, Void, Integer> {
 
+
+    public class UserLoginTask extends AsyncTask<Void, Void, Integer> {
         private final String mEmail;
         private final String mPassword;
-        private final String mPhone;
-        private String text;
+        private final Context mContext;
+        private StringBuilder info;
 
-
-        UserRegisterTask(String email, String password, String phone) {
+        UserLoginTask(String email, String password, Context context) {
             mEmail = email;
             mPassword = password;
-            mPhone = phone;
-            text = "";
+            mContext = context;
+            info = new StringBuilder();
         }
 
         @Override
         protected Integer doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return -1;
+            }
 
             // TODO: register the new account here.
-
             String response = "";
             try {
-                response = post("https://wokba.com/api/register.php", mEmail,
-                        mPassword, mPhone);
-            } catch (IOException e) {
+                response = post("https://wokba.com/api/login.php", mEmail,
+                        mPassword);
+            }
+            catch (IOException e) {
                 return -1;
             }
             System.out.println(response);
             JsonElement jElement = new JsonParser().parse(response);
             JsonObject jsonObject = jElement.getAsJsonObject();
-            String status = jsonObject.get("status").toString();
-            status = status.substring(1, status.length() - 1);
-            if (status.equals("register_success")) {
+            String status = getStringFromJson("status", jsonObject);
+            if (status.equals("login_success")) {
+                info.append(getStringFromJson("uid", jsonObject)).append("/n")
+                .append(getStringFromJson("customer", jsonObject)).append("/n")
+                .append(getStringFromJson("customer_4", jsonObject)).append("/n")
+                .append(getStringFromJson("customer_b", jsonObject)).append("/n")
+                .append(getStringFromJson("points", jsonObject)).append("/n")
+                .append(getStringFromJson("phone", jsonObject)).append("/n")
+                .append(getStringFromJson("nickname", jsonObject)).append("/n");
                 return 1;
             }
             return 0;
@@ -209,40 +223,49 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Integer success) {
             mAuthTask = null;
+            showProgress(false);
 
             if (success > 0) {
-                finish();
+                Intent i = new Intent(mContext, MainUIActicity.class);
+                i.putExtra(Intent.EXTRA_TEXT, info.toString());
+                User.setEmailandPassword(mEmail, mPassword);
+                startActivity(i);
             } else if (success == 0){
-                mEmailView.setError(getString(R.string.error_register_failure));
-                mEmailView.requestFocus();
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.requestFocus();
             }
             else {
                 mEmailView.setError(getString(R.string.network_error));
                 mEmailView.requestFocus();
-
             }
         }
 
         @Override
         protected void onCancelled() {
             mAuthTask = null;
+            showProgress(false);
         }
 
-        private String post(String url, String email, String password, String phone) throws IOException {
-            long time = System.currentTimeMillis() / 1000L;
-            String encryptedPassword = Encryption.md5(password);
+        private String getStringFromJson(String name, JsonObject jsonObject) {
+            String data = jsonObject.get(name).toString();
+            data = data.substring(1, data.length() - 1);
+            return data;
+        }
+
+        private String post(String url, String email, String password) throws IOException {
             StringBuilder sb = new StringBuilder();
-            sb.append(email).append(encryptedPassword)
-                    .append(String.valueOf(time))
-                    .append(phone);
+            String encryptedPassword = Encryption.md5(password);
+            sb.append(email).append(encryptedPassword);
             String token = Encryption.encryptData(sb.toString());
+            String android_id = Settings.Secure.getString(mContext.getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+            System.out.println(token);
             RequestBody body = new FormBody.Builder()
                     .add("username", email)
                     .add("keyword", encryptedPassword)
-                    .add("time", time + "")
-                    .add("type", "NORMAL")
-                    .add("phone", phone)
-                    .add("token", token).build();
+                    .add("token", token)
+                    .add("deviceToken", android_id)
+                    .build();
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
@@ -254,4 +277,5 @@ public class SignUpActivity extends AppCompatActivity {
             return res;
         }
     }
+
 }

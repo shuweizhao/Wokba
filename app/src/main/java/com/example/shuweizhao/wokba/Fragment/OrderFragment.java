@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Fragment;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.shuweizhao.wokba.Activity.ShakeActivity;
+import com.example.shuweizhao.wokba.R;
 
 /**
  * Created by shuweizhao on 3/23/16.

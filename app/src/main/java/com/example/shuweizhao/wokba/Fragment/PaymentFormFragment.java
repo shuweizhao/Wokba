@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.example.shuweizhao.wokba.Activity.BindCardActivity;
+import com.example.shuweizhao.wokba.PaymentForm;
+import com.example.shuweizhao.wokba.R;
 
 /**
  * Created by shuweizhao on 4/6/16.

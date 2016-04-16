@@ -1,8 +1,10 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.shuweizhao.wokba.R;
 
 /**
  * Created by shuweizhao on 3/23/16.

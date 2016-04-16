@@ -13,12 +13,13 @@ public class User {
     private static String m_points;
     private static String m_phone;
     private static String m_nickname;
+    private static String m_chatID;
     private static String memail;
     private static String mpassword;
     private static ArrayList<String[]> favorites;
 
     public static void init(String uid, String customer, String customer_4, String customer_b,
-         String points, String phone, String nickname) {
+         String points, String phone, String nickname, String chatID) {
         m_uid = uid;
         m_customer = customer;
         m_customer_4 = customer_4;
@@ -26,6 +27,7 @@ public class User {
         m_points = points;
         m_phone = phone;
         m_nickname = nickname;
+        m_chatID = chatID;
     }
 
     public static void addFavorite(String[] store) {
@@ -71,15 +73,25 @@ public class User {
     }
 
     public static void setCustomer(String customer) {
-        User.m_customer = customer;
+        m_customer = customer;
     }
 
     public static void setCustomer_b(String customer_b) {
         User.m_customer_b = customer_b;
     }
 
+    public static void setCustomer_4(String customer_4) {
+        m_customer_4 = customer_4;
+    }
+
     public static String getCardLast4() {
         return m_customer_4;
+    }
+
+    public static void clearCardInfo() {
+        m_customer = "NONE";
+        m_customer_4 = "NONE";
+        m_customer_b = "NONE";
     }
 
 }

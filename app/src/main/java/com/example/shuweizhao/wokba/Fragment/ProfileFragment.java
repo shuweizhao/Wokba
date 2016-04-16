@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.example.shuweizhao.wokba.Activity.BindCardActivity;
+import com.example.shuweizhao.wokba.Activity.FavoriteActivity;
+import com.example.shuweizhao.wokba.R;
 
 /**
  * Created by shuweizhao on 3/23/16.

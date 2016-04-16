@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -13,6 +13,8 @@ import android.util.LruCache;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.shuweizhao.wokba.Fragment.CircleFragment;
+import com.example.shuweizhao.wokba.R;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.lang.ref.WeakReference;

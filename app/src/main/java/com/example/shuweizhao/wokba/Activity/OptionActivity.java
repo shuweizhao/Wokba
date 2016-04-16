@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.shuweizhao.wokba.R;
 
 import java.util.ArrayList;
 
@@ -35,12 +37,8 @@ public class OptionActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < myAdapter.getCount(); i++) {
-                    sb.append(myAdapter.getCount(i)).append("#");
-                }
                 Intent i = new Intent();
-                i.putExtra(Intent.EXTRA_TEXT, sb.toString());
+                i.putExtra(Intent.EXTRA_TEXT, myAdapter.getTotalCount());
                 setResult(RESULT_OK, i);
                 finish();
             }
@@ -50,13 +48,27 @@ public class OptionActivity extends AppCompatActivity {
     private class MyAdapter extends BaseAdapter{
         private ArrayList<String> option;
         private Context context;
-        private ArrayList<TextView> rootView;
+        private int[] count;
 
         MyAdapter(ArrayList<String> option, Context context) {
             this.option = option;
             this.context = context;
-            rootView = new ArrayList<>();
+            count = new int[option.size()];
+            for (int i = 0; i < option.size(); i++) {
+                count[i] = 0;
+            }
         }
+
+        public String getTotalCount() {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < count.length; i++) {
+                if (count[i] != 0) {
+                    sb.append(i).append("#");
+                }
+            }
+            return sb.toString();
+        }
+
         @Override
         public int getCount() {
             return option.size();
@@ -73,7 +85,7 @@ public class OptionActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             String[] params = getItem(position).split("#");
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             View view = layoutInflater.inflate(R.layout.option_list_item_layout, null);
@@ -81,7 +93,6 @@ public class OptionActivity extends AppCompatActivity {
             TextView brief = (TextView) view.findViewById(R.id.option_list_brief);
             TextView unitprice = (TextView) view.findViewById(R.id.option_list_unit_price);
             final TextView cnt = (TextView) view.findViewById(R.id.option_list_cnt);
-            rootView.add(cnt);
             title.setText(params[1]);
             brief.setText(params[2]);
             unitprice.setText(params[3]);
@@ -93,26 +104,20 @@ public class OptionActivity extends AppCompatActivity {
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer i = Integer.valueOf(cnt.getText().toString());
-                    i++;
-                    cnt.setText("" + i);
+                    count[position]++;
+                    cnt.setText("" + count[position]);
                 }
             });
             remove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Integer i = Integer.valueOf(cnt.getText().toString());
-                    if (i > 0) {
-                        i--;
-                        cnt.setText("" + i);
+                    if (count[position] > 0) {
+                        count[position]--;
+                        cnt.setText("" + count[position]);
                     }
                 }
             });
             return view;
-        }
-
-        public String getCount(int position) {
-            return rootView.get(position).getText().toString();
         }
 
     }
@@ -121,9 +126,6 @@ public class OptionActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < myAdapter.getCount(); i++) {
-            sb.append(myAdapter.getCount(i)).append("#");
-        }
         Intent i = new Intent();
         i.putExtra("optionsCount", sb.toString());
         setResult(RESULT_OK, i);
