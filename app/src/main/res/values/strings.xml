@@ -23,6 +23,37 @@
     <string name="order_history">Order History</string>
     <string name="permission_rationale">"Location permissions are needed."</string>
     <string name="network_error">No network connection availabel, please check your network</string>
-    <string name="special_instructions">SPECIAL INSTRUCTIONS</string>
+    <string name="special_instructions">SPECIAL INSTRUCTIONS : </string>
     <string name="plate_order_notes">Add a note(extra sauce, no onions, etc.)</string>
+    <string name="ingredients">INGREDIENTS : </string>
+    <string name="description">DESCRIPTION : </string>
+    <string name="options">ADDITIONAL OPTIONS : </string>
+    <string name="new_order">New Order</string>
+    <string name="check_out_options">Options</string>
+    <string name="check_out_tax">Tax</string>
+    <string name="check_out_total">Total with Tax</string>
+    <string name="no_notes">No Notes</string>
+    <string name="place_order">Place Order</string>
+    <string name="check_out_final_price">Final Price</string>
+    <string name="check_out_no_card">No Binding Card</string>
+    <string name="me">Me</string>
+    <string name="my_favorites">My Favorites</string>
+
+    <string name="addPayment">Add Payment Method</string>
+    <string name="paymentMethods">Payment Methods</string>
+    <string name="endingIn">Card ending in </string>
+    <string name="progressMessage">Creating Token&#8230;</string>
+    <string name="validationErrors">Validation Errors</string>
+    <string name="cardNumber">Card Number</string>
+    <string name="save">Save</string>
+    <string name="cvc">CVC</string>
+    <string name="ok">OK</string>
+    <string name="add">Add/Change</string>
+    <string name="change">Change</string>
+    <string name="delete">Delete</string>
+    <string-array name="currency_array">
+        <item>Currency (optional)</item>
+        <item>Unspecified</item>
+        <item>USD</item>
+    </string-array>
 </resources>

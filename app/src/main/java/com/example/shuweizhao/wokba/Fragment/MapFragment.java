@@ -1,18 +1,25 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.shuweizhao.wokba.R;
+
 /**
  * Created by shuweizhao on 3/23/16.
  */
-public class MessageFragment extends Fragment {
+public class MapFragment extends Fragment {
+
+    @Nullable
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.message_layout, container, false);
+        View rootView = inflater.inflate(R.layout.map_layout, container, false);
         return rootView;
     }
+
 }

@@ -8,7 +8,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:weightSum="1">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="200dp">
@@ -19,7 +20,7 @@
                 />
             <ImageButton android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:src="@drawable/ic_arrow_back_24dp"
+                android:src="@drawable/ic_arrow_back_48dp"
                 android:background="@null"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
@@ -36,6 +37,30 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/ingredients"
+            android:background="@color/colorSecondTitle"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/plate_order_ingredient"
+            android:textSize="16sp"
+            android:padding="4dp"
+            android:layout_marginBottom="32dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:textSize="18sp"
+            android:text="@string/description"
+            android:background="@color/colorSecondTitle"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/plate_order_description"
             android:textSize="16sp"
             android:padding="4dp"
@@ -43,13 +68,26 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/options"
+            android:id="@+id/plate_order_options"
+            android:visibility="gone"
+            android:background="@color/colorSecondTitle"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/special_instructions"
+            android:textSize="18sp"
+            android:textColor="@color/colorText2"
             android:paddingLeft="4dp"
-            android:background="@android:color/background_light"/>
+            android:paddingBottom="4dp"
+            android:background="@color/colorSecondTitle" />
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="4dp"
+            android:paddingTop="4dp"
             android:maxLines="2"
             android:hint="@string/plate_order_notes"
             android:id="@+id/plate_order_notes"
@@ -57,46 +95,55 @@
             android:nextFocusLeft="@id/plate_order_notes"/>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
+            android:paddingTop="16dp"
             >
-            <Button
-                android:layout_width="40dp"
+            <ImageButton
                 android:layout_height="45dp"
-                android:textColor="@color/colorText"
+                android:layout_width="38dp"
                 android:id="@+id/plate_order_remove"
-                android:text="-"
-                android:textSize="30sp"
+                android:src="@drawable/ic_remove_24dp"
                 android:background="@drawable/left_rount_button"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                />
+                android:layout_toStartOf="@+id/plate_order_count" />
             <TextView android:layout_height="45dp"
                 android:layout_width="30dp"
                 android:text="1"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:gravity="center"
                 android:id="@+id/plate_order_count"
                 android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/plate_order_remove" />
-            <Button
-                android:layout_width="40dp"
+                android:layout_centerHorizontal="true" />
+            <ImageButton
                 android:layout_height="45dp"
+                android:layout_width="38dp"
                 android:textColor="@color/colorText"
-                android:text="+"
-                android:textSize="30sp"
+                android:src="@drawable/ic_add_24dp"
                 android:background="@drawable/right_round_button"
+                android:id="@+id/plate_order_add"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/plate_order_count" />
+            <TextView
+                android:layout_width="38dp"
+                android:layout_height="45dp"
+                android:id="@+id/plate_order_unit_price"
+                android:textSize="25sp"
+                android:layout_alignBaseline="@+id/plate_order_order"
+                android:layout_alignBottom="@+id/plate_order_order"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/plate_order_remove" />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Order"
+                style="?android:textAppearanceSmall"
                 android:textColor="@color/colorText"
                 android:layout_marginRight="2dp"
                 android:background="@color/colorPrimary"
-                android:layout_alignBottom="@+id/plate_item_remove"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/plate_order_order"/>
+                android:id="@+id/plate_order_order"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_toEndOf="@+id/plate_order_add" />
         </RelativeLayout>
     </LinearLayout>
 

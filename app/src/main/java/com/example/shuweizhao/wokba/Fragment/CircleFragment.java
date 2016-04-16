@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import com.example.shuweizhao.wokba.Activity.IntermediateActivity;
+import com.example.shuweizhao.wokba.Activity.MainActivity;
+import com.example.shuweizhao.wokba.R;
 
 /**
  * Created by shuweizhao on 3/23/16.

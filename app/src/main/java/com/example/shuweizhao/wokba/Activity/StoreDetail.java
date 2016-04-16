@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.shuweizhao.wokba.Dish;
+import com.example.shuweizhao.wokba.Encryption;
+import com.example.shuweizhao.wokba.MyHttpClient;
+import com.example.shuweizhao.wokba.R;
+import com.example.shuweizhao.wokba.User;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
@@ -33,6 +38,7 @@ import okhttp3.Response;
  * Created by shuweizhao on 3/25/16.
  */
 public class StoreDetail extends AppCompatActivity {
+    private String storeInfo;
     private String[] params;
     private static boolean isFavorite = false;
     private final Gson gson = new Gson();
@@ -42,7 +48,8 @@ public class StoreDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        params = getIntent().getStringExtra(Intent.EXTRA_TEXT).split("#");
+        storeInfo = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        params = storeInfo.split("#");
         Fresco.initialize(this);
         context = this;
         setContentView(R.layout.store_detail_layout);
@@ -120,14 +127,14 @@ public class StoreDetail extends AppCompatActivity {
             ArrayList<Dish> list = new ArrayList<>();
             for (Dish d : dishes) {
                 list.add(d);
-                System.out.println(d.toString());
             }
             platesList.setAdapter(new Myadapter(list, context));
             platesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(context, PlateOrderActivity.class);
-                    intent.putExtra(Intent.EXTRA_TEXT, parent.getItemAtPosition(position).toString());
+                    intent.putExtra(Intent.EXTRA_TEXT, storeInfo + "*" + parent.getItemAtPosition(position).toString());
+                    System.out.println(intent.getStringExtra(Intent.EXTRA_TEXT));
                     startActivity(intent);
                 }
             });
@@ -148,7 +155,6 @@ public class StoreDetail extends AppCompatActivity {
             Response response = MyHttpClient.getClient().newCall(request).execute();
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
             final String res = response.body().string();
-            System.out.println(res);
             response.body().close();
             return res;
         }

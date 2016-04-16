@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.shuweizhao.wokba.R;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -85,7 +86,7 @@ public class StoreListActivity extends Activity {
             image.setImageURI(uri);
             ranking.setText(params[params.length - 1]);
             thumbup.setText(params[6]);
-            distance.setText(params[params.length - 2]);
+            distance.setText(params[params.length - 2] + " miles");
             return rootView;
         }
 

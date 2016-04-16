@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView android:id="@+id/payment_form_title"
+        android:text="@string/addPayment"
+        android:layout_alignParentTop="true"
+        style="@style/Header"
+        />
+    <TextView android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:id="@+id/card_info"
+        android:textSize="18sp"
+        android:textColor="@color/colorText2"
+        android:layout_below="@+id/payment_form_title"
+        android:text="@string/action_register"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"/>
+
+
+    <FrameLayout android:id="@+id/payment_form"
+        android:layout_below="@id/card_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        />
+    <Button android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/payment_add"
+        android:layout_below="@+id/payment_form"
+        android:text="@string/add"/>
+
+    <Button android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/payment_delete"
+        android:layout_alignTop="@+id/payment_add"
+        android:layout_alignParentEnd="true"
+        android:text="@string/delete"/>
+
+
+</RelativeLayout>

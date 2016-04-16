@@ -39,6 +39,7 @@ public class Dish {
     public String getBrief() {
         return brief;
     }
+
     public String getIngredient() {
         return ingredient;
     }
@@ -46,6 +47,7 @@ public class Dish {
     public String getIMAGE_PATH() {
         return image_path;
     }
+
     public String getSmallIMAGE_PATH() {
         String[] params = image_path.split("\\.");
         return params.length == 2 ? (params[0] + "_s." + params[1]) : "";

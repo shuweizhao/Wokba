@@ -1,4 +1,4 @@
-package com.example.shuweizhao.wokba;
+package com.example.shuweizhao.wokba.Activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,6 +23,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.shuweizhao.wokba.Encryption;
+import com.example.shuweizhao.wokba.Fragment.MessageFragment;
+import com.example.shuweizhao.wokba.MyHttpClient;
+import com.example.shuweizhao.wokba.Fragment.OrderFragment;
+import com.example.shuweizhao.wokba.Fragment.ProfileFragment;
+import com.example.shuweizhao.wokba.R;
+import com.example.shuweizhao.wokba.Store;
+import com.example.shuweizhao.wokba.User;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -99,9 +107,16 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
 
     private void saveUserData(Intent intent) {
         String[] params = intent.getStringExtra(Intent.EXTRA_TEXT).split("/n");
-        String nickname = params.length > 6 ? params[6] : "";
-        new User(params[0], params[1], params[2], params[3], params[4], params[5],
-                nickname);
+        String nickname = "";
+        String chatID = "";
+        if (params.length == 7) {
+            nickname = params[6];
+        }
+        else if (params.length == 8){
+            chatID = params[7];
+        }
+        User.init(params[0], params[1], params[2], params[3], params[4], params[5],
+                nickname, chatID);
 
     }
 
@@ -274,7 +289,7 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
         // Get longitude of the current location
         double longitude = myLocation.getLongitude();
         System.out.println(latitude + " " + longitude);
-        FetchStoreDataTask fetchSDataTask = new FetchStoreDataTask(latitude, longitude);
+        FetchStoreDataTask fetchSDataTask = new FetchStoreDataTask(longitude, latitude);
         fetchSDataTask.execute();
         // Create a LatLng object for the current location
         LatLng latLng = new LatLng(latitude, longitude);
@@ -337,7 +352,7 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
             windowTitle.setText(title);
             windowRanking.setText(info[9]);
             windowThumb.setText(info[6]);
-            windowDistance.setText(info[8]);
+            windowDistance.setText(info[8]+" miles");
             windowDescription.setText(info[3]);
 
             return rootView;

@@ -14,28 +14,38 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".IntermediateActivity">
+        <activity android:name=".Activity.IntermediateActivity">
         </activity>
-        <activity android:name=".SignUpActivity">
+        <activity android:name=".Activity.SignUpActivity">
         </activity>
-        <activity android:name=".LogInActivity">
+        <activity android:name=".Activity.LogInActivity">
         </activity>
-        <activity android:name=".MainUIActicity">
+        <activity android:name=".Activity.MainUIActicity">
         </activity>
-        <activity android:name=".StoreDetail">
+        <activity android:name=".Activity.StoreDetail">
         </activity>
-        <activity android:name=".ShakeActivity">
+        <activity android:name=".Activity.ShakeActivity">
         </activity>
-        <activity android:name=".StoreListActivity">
+        <activity android:name=".Activity.StoreListActivity">
         </activity>
-        <activity android:name=".PlateOrderActivity">
+        <activity android:name=".Activity.PlateOrderActivity">
+        </activity>
+        <activity android:name=".Activity.CheckOutActivity">
+        </activity>
+        <activity android:name=".Activity.FavoriteActivity">
+        </activity>
+        <activity android:name=".Activity.BindCardActivity">
+        </activity>
+        <activity android:name=".Activity.OptionActivity">
+        </activity>
+        <activity android:name=".Activity.OrderSuccessActivity">
         </activity>
     </application>
 
