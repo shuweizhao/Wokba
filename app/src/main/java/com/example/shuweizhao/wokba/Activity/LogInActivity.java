@@ -228,6 +228,7 @@ public class LogInActivity extends AppCompatActivity {
             if (success > 0) {
                 Intent i = new Intent(mContext, MainUIActicity.class);
                 i.putExtra(Intent.EXTRA_TEXT, info.toString());
+                i.putExtra("id", ActivityInstants.LOG_IN_ACTIVITY);
                 User.setEmailandPassword(mEmail, mPassword);
                 startActivity(i);
             } else if (success == 0){

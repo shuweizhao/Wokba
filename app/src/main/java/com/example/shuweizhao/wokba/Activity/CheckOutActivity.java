@@ -127,8 +127,8 @@ public class CheckOutActivity extends AppCompatActivity {
                     startActivityForResult(intent, 2);
                 }
                 else {
-                    Intent intent = new Intent(context, OrderSuccessActivity.class);
-                    startActivity(intent);
+                    FetchOrderTask fetchOrderTask = new FetchOrderTask();
+                    fetchOrderTask.execute();
                 }
             }
         });
@@ -253,11 +253,12 @@ public class CheckOutActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             String response = "";
             try {
-                response = post("https://wokba.com/api/order.php");
+                response = post("https://wokba.com/api/order-test.php");
             }
             catch (IOException e) {
                 System.out.println("unexpected code");
             }
+            System.out.println(response);
             return response;
         }
 

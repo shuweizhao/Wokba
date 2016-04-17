@@ -41,7 +41,7 @@ import okhttp3.Response;
  * Created by shuweizhao on 4/4/16.
  */
 public class BindCardActivity extends AppCompatActivity {
-    public static final String PUBLISHABLE_KEY = "pk_live_XqcCUGIITvxiljLP924M6DzO";
+    public static final String PUBLISHABLE_KEY = "pk_test_zeKJfFZncVYgMLqoRCM3ZzPj";
     private static final String cardending = "Card ending in ";
     private ProgressDialogFragment progressFragment;
     private TextView cardInfo;
@@ -243,7 +243,7 @@ public class BindCardActivity extends AppCompatActivity {
                     .add("time", String.valueOf(time))
                     .add("token", token).build();
             Request request = new Request.Builder()
-                    .url("https://wokba.com/api/payment.php")
+                    .url("https://wokba.com/api/payment-test.php")
                     .post(body)
                     .build();
             Response response = MyHttpClient.getClient().newCall(request).execute();

@@ -51,6 +51,9 @@
     <string name="add">Add/Change</string>
     <string name="change">Change</string>
     <string name="delete">Delete</string>
+    <string name="order_success">Order Success!</string>
+    <string name="stay_here">Stay Here</string>
+    <string name="order_go">See your Order in Order</string>
     <string-array name="currency_array">
         <item>Currency (optional)</item>
         <item>Unspecified</item>

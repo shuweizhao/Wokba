@@ -95,10 +95,15 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
         context = this;
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         setContentView(R.layout.main_ui_layout);
-        initView();
-        saveUserData(getIntent());
         fragmentManager = getFragmentManager();
-        setTabSelection(0);
+        initView();
+        if (getIntent().getIntExtra("id", 0) == ActivityInstants.LOG_IN_ACTIVITY) {
+            saveUserData(getIntent());
+            setTabSelection(0);
+        }
+        else if (getIntent().getIntExtra("id", 0) == ActivityInstants.ORDER_SUCCESS_ACTIVITY) {
+            setTabSelection(1);
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             requestLocationPermission();
