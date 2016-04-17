@@ -2,6 +2,7 @@ package com.example.shuweizhao.wokba.Activity;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -47,6 +48,8 @@ public class BindCardActivity extends AppCompatActivity {
     private Button add, change, delete;
     private FrameLayout frameLayout;
     private PaymentFormFragment paymentFormFragment;
+    private Intent ii = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,12 +103,20 @@ public class BindCardActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (ii != null) {
+                    ii = new Intent();
+                }
+                setResult(RESULT_OK, ii);
                 finish();
             }
         });
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (ii != null) {
+                    ii = new Intent();
+                }
+                setResult(RESULT_OK, ii);
                 finish();
             }
         });

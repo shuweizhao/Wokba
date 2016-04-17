@@ -62,9 +62,7 @@ public class OptionActivity extends AppCompatActivity {
         public String getTotalCount() {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < count.length; i++) {
-                if (count[i] != 0) {
-                    sb.append(i).append("#");
-                }
+                sb.append(count[i]).append("#");
             }
             return sb.toString();
         }

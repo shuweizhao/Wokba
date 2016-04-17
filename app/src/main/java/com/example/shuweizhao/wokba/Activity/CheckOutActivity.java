@@ -46,11 +46,14 @@ public class CheckOutActivity extends AppCompatActivity {
     private Button placeorder, optionsButton;
     private String[] storeInfo, plateInfo, params;
     private Option[] optionData = null;
-    private int[] optionIndex = null;
+    private int[] optionCount = null;
     private String platetotalprice, taxString;
+    private DecimalFormat decimalFormat = new DecimalFormat("#.00");
+
 
     private final double TAX_RATE = 0.0667;
     private static final String cardending = "Card ending in ";
+    private final String MONEY_SYMBOL = "$";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +101,6 @@ public class CheckOutActivity extends AppCompatActivity {
         title.setText(params[0]);
         setResizedPic(Uri.parse(params[1]));
         cnt.setText(params[2]);
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
         platetotalprice = decimalFormat.format(Double.valueOf(params[3]) * Double.valueOf(params[2]));
         plateTotalPrice.setText("$" + platetotalprice);
         options.setText("$" + params[4]);
@@ -122,10 +124,11 @@ public class CheckOutActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!User.hasBindCard()) {
                     Intent intent = new Intent(context, BindCardActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 2);
                 }
                 else {
-
+                    Intent intent = new Intent(context, OrderSuccessActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -134,15 +137,42 @@ public class CheckOutActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            System.out.println(data.getStringExtra(Intent.EXTRA_TEXT));
-            String[] tmp = data.getStringExtra(Intent.EXTRA_TEXT).split("#");
-            optionIndex = new int[tmp.length];
-            for (int i = 0; i < optionIndex.length; i++) {
-                optionIndex[i] = Integer.valueOf(tmp[i]);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) {
+                String[] tmp = data.getStringExtra(Intent.EXTRA_TEXT).split("#");
+                optionCount = new int[tmp.length];
+                for (int i = 0; i < optionCount.length; i++) {
+                    optionCount[i] = Integer.valueOf(tmp[i]);
+                }
+                if (optionCount.length > 0) {
+                    Double optionTotal = getOptionTotal();
+                    Double allTotal = optionTotal + Double.valueOf(platetotalprice);
+                    Double t = allTotal * TAX_RATE;
+                    String allTotalWithTax = decimalFormat.format(allTotal + t);
+                    options.setText(MONEY_SYMBOL + decimalFormat.format(optionTotal));
+                    tax.setText(MONEY_SYMBOL + decimalFormat.format(t));
+                    totalWithTax.setText(MONEY_SYMBOL + allTotalWithTax);
+                    finalPrice.setText(MONEY_SYMBOL + allTotalWithTax);
+                }
             }
 
+            if (requestCode == 2) {
+                if (User.hasBindCard()) {
+                    cardInfo.setText(User.getCustomer_b() + " " + User.getCustomer_4());
+                    placeorder.setText(getString(R.string.place_order));
+                }
+            }
         }
+    }
+
+    private Double getOptionTotal() {
+        Double res = 0.0;
+        for (int i = 0; i < optionCount.length; i++) {
+            if (optionCount[i] > 0) {
+                res += optionData[i].getOptionPrice() * optionCount[i];
+            }
+        }
+        return res;
     }
 
     private void setCustomActionBar() {

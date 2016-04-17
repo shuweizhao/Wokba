@@ -63,6 +63,12 @@ public class User {
         return m_customer;
     }
 
+    public static String getCustomer_4() {return m_customer_4; }
+
+    public static String getCustomer_b() {
+        return m_customer_b;
+    }
+
     public static ArrayList<String[]> getFavorites() {
         return favorites;
     }

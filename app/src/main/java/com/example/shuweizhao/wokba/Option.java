@@ -13,8 +13,8 @@ public class Option {
         return title;
     }
 
-    public String getOptionPrice() {
-        return price;
+    public Double getOptionPrice() {
+        return Double.valueOf(price);
     }
 
     public String getOptionBrief() {
