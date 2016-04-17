@@ -54,7 +54,6 @@ public class BindCardActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bindcard_activity_layout);
-
         progressFragment = ProgressDialogFragment.newInstance(R.string.progressMessage);
         cardInfo = (TextView) findViewById(R.id.card_info);
         if (User.hasBindCard()) {
@@ -100,6 +99,9 @@ public class BindCardActivity extends AppCompatActivity {
         TextView title = (TextView) v.findViewById(R.id.profile_action_title);
         TextView back = (TextView) v.findViewById(R.id.profile_back);
         ImageView iv = (ImageView) v.findViewById(R.id.imageView4);
+        if (getIntent().getIntExtra("id", 0) == ActivityInstants.CHECK_OUT_ACTIVITY) {
+            back.setText(getString(R.string.order));
+        }
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

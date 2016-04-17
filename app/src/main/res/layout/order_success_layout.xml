@@ -3,11 +3,18 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
-        android:paddingTop="130dp"
+        android:layout_marginTop="130dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/order_success_icon"
         android:src="@drawable/ic_done_24dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="You have paid $20"
+        android:gravity="center_horizontal"
+        android:id="@+id/order_success_message" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

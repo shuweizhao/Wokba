@@ -21,6 +21,10 @@ public class Option {
         return brief;
     }
 
+    public String getID() {
+        return id;
+    }
+
     Option(String id, String title, String price, String brief) {
         this.id = id;
         this.title = title;

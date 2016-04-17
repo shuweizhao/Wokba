@@ -25,6 +25,7 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
@@ -54,6 +55,10 @@ public class CheckOutActivity extends AppCompatActivity {
     private final double TAX_RATE = 0.0667;
     private static final String cardending = "Card ending in ";
     private final String MONEY_SYMBOL = "$";
+    private final String OPTION_ID = "optionID";
+    private final String OPTION_TITLE = "optionTitle";
+    private final String OPTION_PRICE = "optionPrice";
+    private final String OPTION_Amount = "optionAmount";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +129,7 @@ public class CheckOutActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!User.hasBindCard()) {
                     Intent intent = new Intent(context, BindCardActivity.class);
+                    intent.putExtra("id", ActivityInstants.CHECK_OUT_ACTIVITY);
                     startActivityForResult(intent, 2);
                 }
                 else {
@@ -265,6 +271,23 @@ public class CheckOutActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            JsonElement jelement = new JsonParser().parse(s);
+            JsonObject jsonObject = jelement.getAsJsonObject();
+            String status = jsonObject.get("status").toString();
+            String message = jsonObject.get("message").toString();
+            status = status.substring(1, status.length() - 1);
+            message = message.substring(1, status.length() - 1);
+            if (status.equals("Order_success")) {
+                Intent intent = new Intent(context, OrderSuccessActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT, message);
+                startActivity(intent);
+            }
+            else if (status.equals("Upgrade")) {
+
+            }
+            else {
+
+            }
         }
 
         private String post(String url) throws IOException {
@@ -285,7 +308,7 @@ public class CheckOutActivity extends AppCompatActivity {
                     .append(platetotalprice)
                     .append(taxString);
             String token = Encryption.encryptData(sb.toString());
-            RequestBody body = new FormBody.Builder()
+            FormBody.Builder body = new FormBody.Builder()
                     .add("uid", User.getUid())
                     .add("customer", User.getCustomer())
                     .add("unit_price", unit_price)
@@ -299,15 +322,35 @@ public class CheckOutActivity extends AppCompatActivity {
                     .add("sid", sid)
                     .add("version", "1.10")
                     .add("note", notes)
-                    .add("optionTotal", "0")
-                    .add("optionRecord", "")
                     .add("submitted", time + "")
-                    .add("token", token)
-                    .add("optionCount", "0")
-                    .build();
+                    .add("token", token);
+            if (optionCount != null && optionCount.length > 0) {
+                body.add("optionCount", "" + optionCount.length);
+                StringBuilder optionRecord = new StringBuilder();
+                for (int i = 0; i < optionCount.length; i++) {
+                    if (optionCount[i] != 0) {
+                        body.add(OPTION_ID + String.valueOf(i + 1), optionData[i].getID());
+                        body.add(OPTION_TITLE + String.valueOf(i + 1), optionData[i].getOptionTitle());
+                        body.add(OPTION_PRICE + String.valueOf(i + 1), optionData[i].getOptionPrice().toString());
+                        body.add(OPTION_Amount + String.valueOf(i + 1), String.valueOf(optionCount[i]));
+                        optionRecord.append(optionData[i].getID()).append(":$")
+                                .append(optionData[i].getOptionPrice()).append("|")
+                                .append(optionCount[i]).append(",");
+                    }
+                }
+                body.add("optionRecord", optionRecord.toString());
+                body.add("optionTotal", "" + getOptionTotal());
+            }
+            else {
+                body.add("optionCount", "0");
+                body.add("optionTotal", "0");
+                body.add("optionRecord", "");
+            }
+
+            RequestBody requestBody = body.build();
             Request request = new Request.Builder()
                     .url(url)
-                    .post(body)
+                    .post(requestBody)
                     .build();
             Response response = MyHttpClient.getClient().newCall(request).execute();
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
