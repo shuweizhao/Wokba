@@ -24,6 +24,7 @@ public class OrderSuccessActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         TextView message = (TextView) findViewById(R.id.order_success_message);
         Button button = (Button) findViewById(R.id.order_go);
+        System.out.println(getIntent().getStringExtra(Intent.EXTRA_TEXT));
         message.setText(getIntent().getStringExtra(Intent.EXTRA_TEXT));
         button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -276,7 +276,7 @@ public class CheckOutActivity extends AppCompatActivity {
             String status = jsonObject.get("status").toString();
             String message = jsonObject.get("message").toString();
             status = status.substring(1, status.length() - 1);
-            message = message.substring(1, status.length() - 1);
+            message = message.substring(1, message.length() - 1);
             if (status.equals("Order_success")) {
                 Intent intent = new Intent(context, OrderSuccessActivity.class);
                 intent.putExtra(Intent.EXTRA_TEXT, message);
