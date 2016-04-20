@@ -16,8 +16,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,9 +25,9 @@ import android.widget.TextView;
 
 import com.example.shuweizhao.wokba.Encryption;
 import com.example.shuweizhao.wokba.Fragment.MessageFragment;
-import com.example.shuweizhao.wokba.MyHttpClient;
 import com.example.shuweizhao.wokba.Fragment.OrderFragment;
 import com.example.shuweizhao.wokba.Fragment.ProfileFragment;
+import com.example.shuweizhao.wokba.MyHttpClient;
 import com.example.shuweizhao.wokba.R;
 import com.example.shuweizhao.wokba.Store;
 import com.example.shuweizhao.wokba.User;
@@ -54,7 +54,7 @@ import okhttp3.Response;
 /**
  * Created by shuweizhao on 3/23/16.
  */
-public class MainUIActicity extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
+public class MainUIActicity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
     private final String[] names = {"uid", "customer", "customer_4", "customer_b", "points"
             , "phone", "nickname"};
     private final Gson gson = new Gson();
@@ -93,6 +93,7 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         context = this;
+        getSupportActionBar().hide();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         setContentView(R.layout.main_ui_layout);
         fragmentManager = getFragmentManager();
@@ -112,6 +113,9 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
 
     private void saveUserData(Intent intent) {
         String[] params = intent.getStringExtra(Intent.EXTRA_TEXT).split("/n");
+        for (int i = 0; i < params.length; i++) {
+            System.out.println(params[i]);
+        }
         String nickname = "";
         String chatID = "";
         if (params.length == 7) {
@@ -125,6 +129,9 @@ public class MainUIActicity extends FragmentActivity implements View.OnClickList
 
     }
 
+    public Context getContext() {
+        return context;
+    }
     private void initView() {
 
         mapLayout = (RelativeLayout) findViewById(R.id.tab_map_layout);

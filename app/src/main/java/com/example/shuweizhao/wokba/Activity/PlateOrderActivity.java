@@ -143,6 +143,7 @@ public class PlateOrderActivity extends AppCompatActivity implements View.OnClic
                 .append(notes);
         return sb.toString();
     }
+
     private double round(double value, int places) {
             if (places < 0) throw new IllegalArgumentException();
 

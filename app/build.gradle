@@ -32,4 +32,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:8.4.0'
     compile 'com.android.support:design:23.2.1'
     compile 'com.stripe:stripe-android:+'
+    compile 'com.google.android.gms:play-services-gcm:8.4.0'
 }

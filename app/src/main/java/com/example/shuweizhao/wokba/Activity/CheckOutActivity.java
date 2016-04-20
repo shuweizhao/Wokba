@@ -298,7 +298,7 @@ public class CheckOutActivity extends AppCompatActivity {
             String unit_price = plateInfo[2];
             String amount = params[2];
             String pid = plateInfo[0];
-            String sid = storeInfo[0];
+            String sid = storeInfo[1];
             sb.append(time).append(User.getUid())
                     .append(User.getCustomer())
                     .append(unit_price)
