@@ -14,7 +14,7 @@ import com.example.shuweizhao.wokba.R;
 public class MessageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.message_layout, container, false);
+        View rootView = inflater.inflate(R.layout.shake_layout, container, false);
         return rootView;
     }
 }

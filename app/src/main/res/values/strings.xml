@@ -54,6 +54,8 @@
     <string name="order_success">Order Success!</string>
     <string name="stay_here">Stay Here</string>
     <string name="order_go">See your Order in Order</string>
+    <string name="shake_for_gift">Shake for Gift</string>
+    <string name="shake_for_meal">Shake For Meal</string>
     <string-array name="currency_array">
         <item>Currency (optional)</item>
         <item>Unspecified</item>
