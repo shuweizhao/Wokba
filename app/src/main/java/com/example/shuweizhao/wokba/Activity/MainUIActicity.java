@@ -300,7 +300,7 @@ public class MainUIActicity extends AppCompatActivity implements View.OnClickLis
 
         // Get longitude of the current location
         double longitude = myLocation.getLongitude();
-        System.out.println(latitude + " " + longitude);
+        User.setLonandLat(longitude, latitude);
         FetchStoreDataTask fetchSDataTask = new FetchStoreDataTask(longitude, latitude);
         fetchSDataTask.execute();
         // Create a LatLng object for the current location

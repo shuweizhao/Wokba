@@ -1,5 +1,7 @@
 package com.example.shuweizhao.wokba;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 /**
@@ -16,6 +18,8 @@ public class User {
     private static String m_chatID;
     private static String memail;
     private static String mpassword;
+    private static double longitude;
+    private static double latitude;
     private static ArrayList<String[]> favorites;
 
     public static void init(String uid, String customer, String customer_4, String customer_b,
@@ -78,6 +82,11 @@ public class User {
         mpassword = password;
     }
 
+    public static void setLonandLat(double lon, double lat) {
+        longitude = lon;
+        latitude = lat;
+    }
+
     public static void setCustomer(String customer) {
         m_customer = customer;
     }
@@ -92,6 +101,10 @@ public class User {
 
     public static String getCardLast4() {
         return m_customer_4;
+    }
+
+    public static LatLng getLatLong() {
+        return new LatLng(latitude, longitude);
     }
 
     public static void clearCardInfo() {
