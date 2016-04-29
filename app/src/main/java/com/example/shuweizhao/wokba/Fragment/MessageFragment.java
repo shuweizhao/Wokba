@@ -2,10 +2,12 @@ package com.example.shuweizhao.wokba.Fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
@@ -14,16 +16,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.shuweizhao.wokba.Activity.StoreDetail;
 import com.example.shuweizhao.wokba.Encryption;
 import com.example.shuweizhao.wokba.MyHttpClient;
 import com.example.shuweizhao.wokba.R;
+import com.example.shuweizhao.wokba.Store;
 import com.example.shuweizhao.wokba.User;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.IOException;
 
@@ -36,20 +47,27 @@ import okhttp3.Response;
  * Created by shuweizhao on 3/23/16.
  */
 public class MessageFragment extends Fragment implements View.OnClickListener{
-    private RelativeLayout normalView, popUpWindow;
-    private LinearLayout shakeForGift,shakeForMeal;
-    private TextView giftText, mealText;
-    private ImageButton close;
-    private SensorManager sensorManager;
-    private Vibrator vibrator;
     private static final String TAG = "TestSensorActivity";
     private static final int SENSOR_SHAKE = 10;
+
+    private RelativeLayout normalView, popUpWindow;
+    private LinearLayout shakeForGift,shakeForMeal;
+    private TextView giftText, mealText, windowTitle, windowDistance, windowRank, windowThumb;
+    private SimpleDraweeView windowPic;
+    private ImageButton close;
+    private Button button;
+    private SensorManager sensorManager;
+    private Vibrator vibrator;
+
+    private String info;
     private Activity HomeActivity;
     private int httpCode = 0;
+    private Gson gson = new Gson();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         HomeActivity = getActivity();
+        Fresco.initialize(HomeActivity);
         View rootView = inflater.inflate(R.layout.shake_layout, container, false);
         normalView = (RelativeLayout) rootView.findViewById(R.id.shake_normal_view);
         popUpWindow = (RelativeLayout) rootView.findViewById(R.id.shake_pop_up);
@@ -59,6 +77,15 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         mealText = (TextView) rootView.findViewById(R.id.shake_meal_text);
         close = (ImageButton) rootView.findViewById(R.id.shake_close_pop_up);
 
+        //init window content
+        windowTitle = (TextView) rootView.findViewById(R.id.shake_pop_up_title);
+        windowDistance = (TextView) rootView.findViewById(R.id.shake_pop_up_distance);
+        windowRank = (TextView) rootView.findViewById(R.id.shake_pop_up_ranking);
+        windowThumb = (TextView) rootView.findViewById(R.id.shake_pop_up_thumbs);
+        windowPic = (SimpleDraweeView) rootView.findViewById(R.id.shake_pop_up_pic);
+        button = (Button) rootView.findViewById(R.id.shake_pop_up_click);
+
+        button.setOnClickListener(this);
         shakeForGift.setOnClickListener(this);
         shakeForMeal.setOnClickListener(this);
         close.setOnClickListener(this);
@@ -142,16 +169,27 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                 shakeForGift.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 giftText.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 giftText.setTextColor(getResources().getColor(R.color.colorText));
+                shakeForMeal.setBackgroundColor(getResources().getColor(R.color.colorText));
+                mealText.setBackgroundColor(getResources().getColor(R.color.colorText));
+                mealText.setTextColor(getResources().getColor(R.color.colorText2));
                 httpCode = 2;
                 break;
             case R.id.shake_for_meal:
                 shakeForMeal.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 mealText.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                 mealText.setTextColor(getResources().getColor(R.color.colorText));
+                shakeForGift.setBackgroundColor(getResources().getColor(R.color.colorText));
+                giftText.setBackgroundColor(getResources().getColor(R.color.colorText));
+                giftText.setTextColor(getResources().getColor(R.color.colorText2));
                 httpCode = 1;
                 break;
             case R.id.shake_close_pop_up:
                 hidePopUpWindow();
+                break;
+            case R.id.shake_pop_up_click:
+                Intent intent = new Intent(HomeActivity, StoreDetail.class);
+                intent.putExtra(Intent.EXTRA_TEXT, info);
+                startActivity(intent);
                 break;
         }
     }
@@ -174,6 +212,29 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            JsonElement jsonElement = new JsonParser().parse(s);
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            String j1 = jsonObject.get("type").toString();
+            j1 = j1.substring(1, j1.length() - 1);
+            if (j1.equals("check")) {
+
+            }
+            else if (j1.equals("recommend")) {
+                Store ss = gson.fromJson(jsonObject.get("detail"), Store.class);
+                windowTitle.setText(ss.getTitle());
+                windowDistance.setText(ss.getDistance() + " miles");
+                Uri uri = Uri.parse("https://wokba.com/images/stores/" + ss.getStore_imagePath());
+                windowPic.setImageURI(uri);
+                windowRank.setText(ss.getRank());
+                windowThumb.setText(ss.getThumb());
+                info = ss.toString();
+            }
+            else if (j1.equals("text")) {
+                String text = jsonObject.get("detail").toString();
+            }
+            else {
+
+            }
 
         }
 

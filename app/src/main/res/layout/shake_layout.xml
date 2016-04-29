@@ -77,11 +77,66 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:id="@+id/shake_close_pop_up" />
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/shake_pop_up_window"
             android:layout_below="@+id/shake_close_pop_up"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="@string/action_register"
+                android:id="@+id/shake_pop_up_title"/>
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:id="@+id/shake_pop_up_pic"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_points_24dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shake_pop_up_ranking"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_thumb_up_24dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shake_pop_up_thumbs"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="@string/action_register"
+                android:id="@+id/shake_pop_up_distance"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/go_to_meal"
+                android:id="@+id/shake_pop_up_click"
+                android:textColor="@color/colorText"
+                android:background="@color/colorAccent"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:id="@+id/shake_pop_up_points"
+            android:visibility="gone"/>
     </RelativeLayout>
 </LinearLayout>

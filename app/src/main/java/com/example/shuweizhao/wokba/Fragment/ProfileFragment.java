@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.shuweizhao.wokba.Activity.BindCardActivity;
 import com.example.shuweizhao.wokba.Activity.FavoriteActivity;
 import com.example.shuweizhao.wokba.R;
+import com.example.shuweizhao.wokba.User;
 
 /**
  * Created by shuweizhao on 3/23/16.
@@ -28,6 +29,9 @@ public class ProfileFragment extends android.app.Fragment {
         profilePoint = (TextView) rootView.findViewById(R.id.profile_point);
         profileThumbs = (TextView) rootView.findViewById(R.id.profile_thumb_num);
 
+        if (User.getCardLast4() != "NONE") {
+            cardNum.setText(User.getCardLast4());
+        }
         favoritestore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -56,6 +56,7 @@
     <string name="order_go">See your Order in Order</string>
     <string name="shake_for_gift">Shake for Gift</string>
     <string name="shake_for_meal">Shake For Meal</string>
+    <string name="go_to_meal">Go To Meal</string>
     <string-array name="currency_array">
         <item>Currency (optional)</item>
         <item>Unspecified</item>

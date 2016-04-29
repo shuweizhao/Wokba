@@ -56,6 +56,14 @@ public class Store {
         return new LatLng(latitude, longitude);
     }
 
+    public String getStore_imagePath() {
+        return store_imagePath;
+    }
+
+    public String getSmallIMAGE_PATH() {
+        String[] params = store_imagePath.split("\\.");
+        return params.length == 2 ? (params[0] + "_s." + params[1]) : "";
+    }
     public String getDescription() {
         return description;
     }
