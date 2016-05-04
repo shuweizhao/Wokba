@@ -51,8 +51,8 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
     private static final int SENSOR_SHAKE = 10;
 
     private RelativeLayout normalView, popUpWindow;
-    private LinearLayout shakeForGift,shakeForMeal;
-    private TextView giftText, mealText, windowTitle, windowDistance, windowRank, windowThumb;
+    private LinearLayout shakeForGift,shakeForMeal, windowForMeal;
+    private TextView giftText, mealText, windowTitle, windowDistance, windowRank, windowThumb, windowForPoints;
     private SimpleDraweeView windowPic;
     private ImageButton close;
     private Button button;
@@ -78,6 +78,8 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
         close = (ImageButton) rootView.findViewById(R.id.shake_close_pop_up);
 
         //init window content
+        windowForMeal = (LinearLayout) rootView.findViewById(R.id.shake_pop_up_window);
+        windowForPoints = (TextView) rootView.findViewById(R.id.shake_pop_up_points);
         windowTitle = (TextView) rootView.findViewById(R.id.shake_pop_up_title);
         windowDistance = (TextView) rootView.findViewById(R.id.shake_pop_up_distance);
         windowRank = (TextView) rootView.findViewById(R.id.shake_pop_up_ranking);
@@ -172,6 +174,8 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                 shakeForMeal.setBackgroundColor(getResources().getColor(R.color.colorText));
                 mealText.setBackgroundColor(getResources().getColor(R.color.colorText));
                 mealText.setTextColor(getResources().getColor(R.color.colorText2));
+                windowForPoints.setVisibility(View.VISIBLE);
+                windowForMeal.setVisibility(View.GONE);
                 httpCode = 2;
                 break;
             case R.id.shake_for_meal:
@@ -181,6 +185,8 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
                 shakeForGift.setBackgroundColor(getResources().getColor(R.color.colorText));
                 giftText.setBackgroundColor(getResources().getColor(R.color.colorText));
                 giftText.setTextColor(getResources().getColor(R.color.colorText2));
+                windowForMeal.setVisibility(View.VISIBLE);
+                windowForPoints.setVisibility(View.GONE);
                 httpCode = 1;
                 break;
             case R.id.shake_close_pop_up:
@@ -231,6 +237,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener{
             }
             else if (j1.equals("text")) {
                 String text = jsonObject.get("detail").toString();
+                windowForPoints.setText(text);
             }
             else {
 
