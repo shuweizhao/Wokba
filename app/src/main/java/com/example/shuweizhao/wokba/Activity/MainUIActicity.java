@@ -18,7 +18,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,6 +59,7 @@ import okhttp3.Response;
 public class MainUIActicity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
     private final String[] names = {"uid", "customer", "customer_4", "customer_b", "points"
             , "phone", "nickname"};
+    private final String[] fragmentNames = {"Wokba", "Order", "Shake", "Me"};
     private final Gson gson = new Gson();
     private FragmentManager fragmentManager;
 
@@ -83,7 +86,8 @@ public class MainUIActicity extends AppCompatActivity implements View.OnClickLis
     private TextView orderText;
     private TextView shakeText;
     private TextView profileText;
-
+    private TextView title;
+    private ImageButton refresh;
     private FloatingActionButton fab;
     private Activity context;
     private ArrayList<String> store_infos;
@@ -93,7 +97,7 @@ public class MainUIActicity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         context = this;
-        getSupportActionBar().hide();
+        setCustomActionBar();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         setContentView(R.layout.main_ui_layout);
         fragmentManager = getFragmentManager();
@@ -109,6 +113,20 @@ public class MainUIActicity extends AppCompatActivity implements View.OnClickLis
                 != PackageManager.PERMISSION_GRANTED) {
             requestLocationPermission();
         }
+    }
+
+    private void setCustomActionBar() {
+        getSupportActionBar().setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_CUSTOM);
+        LayoutInflater inflator = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.main_ui_actionbar_layout, null);
+        title = (TextView) v.findViewById(R.id.textView2);
+        refresh = (ImageButton) v.findViewById(R.id.imageButton3);
+        getSupportActionBar().setCustomView(v);
+    }
+
+    public ImageButton getRefresh() {
+        return refresh;
     }
 
     private void saveUserData(Intent intent) {
@@ -179,6 +197,9 @@ public class MainUIActicity extends AppCompatActivity implements View.OnClickLis
                 intent.putStringArrayListExtra("store_list", store_infos);
                 startActivity(intent);
                 break;
+            case R.id.imageButton3:
+
+                break;
         }
     }
 
@@ -186,8 +207,10 @@ public class MainUIActicity extends AppCompatActivity implements View.OnClickLis
         clearSelection();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         hideFragment(fragmentTransaction);
+        title.setText(fragmentNames[id]);
         switch (id) {
             case 0:
+                refresh.setVisibility(View.INVISIBLE);
                 mapLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 mapText.setTextColor(Color.WHITE);
                 fab.setVisibility(View.VISIBLE);
@@ -200,6 +223,7 @@ public class MainUIActicity extends AppCompatActivity implements View.OnClickLis
                 mapFragment.getMapAsync(this);
                 break;
             case 1:
+                refresh.setVisibility(View.INVISIBLE);
                 orderLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 orderText.setTextColor(Color.WHITE);
                 fab.setVisibility(View.GONE);
@@ -211,6 +235,7 @@ public class MainUIActicity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case 2:
+                refresh.setVisibility(View.INVISIBLE);
                 shakeLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 shakeText.setTextColor(Color.WHITE);
                 fab.setVisibility(View.GONE);
@@ -222,6 +247,7 @@ public class MainUIActicity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case 3:
+                refresh.setVisibility(View.VISIBLE);
                 profileLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 profileText.setTextColor(Color.WHITE);
                 fab.setVisibility(View.GONE);

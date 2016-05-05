@@ -57,11 +57,19 @@ public class OrderFragment extends Fragment {
         context = getActivity();
         lv = (ListView) rootView.findViewById(R.id.current_order_list);
         Button button = (Button) rootView.findViewById(R.id.current_order);
+        Button button2 = (Button) rootView.findViewById(R.id.past_order);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FetchOrderTask fetchOrderTask = new FetchOrderTask();
                 fetchOrderTask.execute();
+            }
+        });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FetchPastOrderTask fetchPastOrderTask = new FetchPastOrderTask();
+                fetchPastOrderTask.execute();
             }
         });
         return rootView;
@@ -105,6 +113,60 @@ public class OrderFragment extends Fragment {
             RequestBody body = new FormBody.Builder()
                     .add("id", User.getUid())
                     .add("oids", "")
+                    .add("token", token)
+                    .build();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .post(body)
+                    .build();
+            Response response = MyHttpClient.getClient().newCall(request).execute();
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            final String res = response.body().string();
+            response.body().close();
+            return res;
+        }
+    }
+
+    private class FetchPastOrderTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String response = "";
+            try {
+                response = post("https://wokba.com/api/orderListCompleted.php");
+            }
+            catch (IOException e) {
+                System.out.println("unexpected code");
+            }
+            System.out.println(response);
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JsonElement jsonElement = new JsonParser().parse(s);
+            com.example.shuweizhao.wokba.Order[] orders = gson.fromJson(jsonElement, com.example.shuweizhao.wokba.Order[].class);
+            MyAdapter myAdapter = new MyAdapter(orders, context);
+            lv.setAdapter(myAdapter);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String s = ((Order)parent.getItemAtPosition(position)).toString();
+                    Intent intent = new Intent(context, OrderDetailActivity.class);
+                    intent.putExtra(Intent.EXTRA_TEXT, s);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        private String post(String url) throws IOException {
+            String token = Encryption.encryptData(User.getUid());
+            long time = System.currentTimeMillis() / 1000L;
+            RequestBody body = new FormBody.Builder()
+                    .add("id", User.getUid())
+                    .add("type", "TOP")
+                    .add("orderTime", "")
                     .add("token", token)
                     .build();
             Request request = new Request.Builder()

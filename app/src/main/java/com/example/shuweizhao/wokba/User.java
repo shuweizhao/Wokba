@@ -63,6 +63,10 @@ public class User {
         return m_uid;
     }
 
+    public static String getPoints() {
+        return m_points;
+    }
+
     public static String getCustomer() {
         return m_customer;
     }
