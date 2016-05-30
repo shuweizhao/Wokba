@@ -9,5 +9,5 @@ Developed Functionality includes:
 - Online Ordering and customized options made on each order(like double cheese, more beef etc.)
 - Order status track.
 - "Shake Shake" function. 
-！[alt tag](https://github.com/szhao8/Wokba/blob/master/1.%20welcome_screen.png)
+- ![alt tag](https://github.com/szhao8/Wokba/blob/master/1.%20welcome_screen.png)
 
