@@ -9,3 +9,4 @@ Developed Functionality includes:
 5. Online Ordering and customized options made on each order(like double cheese, more beef etc.)
 6. Order status track.
 7. "Shake Shake" function. 
+
